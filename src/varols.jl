@@ -6,11 +6,10 @@
 # Exogenous vars
 # Exogenous lags
 
-function varols(y::Matrix, constant::Bool, trend::Bool, ylag::Int, x::VecOrMat,
-    xlag::Int)
+function varols(y::Matrix, ylag::Int; constant::Bool=true, trend::Bool=false)
 
     # Set up RHS Matrix
-    rhs = rhs_matrix(y, constant, trend, ylag, x, xlag)
+    rhs = rhs_matrix(y, ylag, constant, trend)
 
     # Set up LHS Matrix
     lhs = y[ylag+1:end, :]
@@ -20,18 +19,16 @@ function varols(y::Matrix, constant::Bool, trend::Bool, ylag::Int, x::VecOrMat,
 end
 
 
-function rhs_matrix(y, constant, trend, ylag, x, xlag)
+function rhs_matrix(y, ylag, constant, trend)
     rhsy = lag_matrix(y, ylag)
-    rhsx = xlag > 0 ? lag_matrix(x, xlag) : x[ylag+1:end, :]
-    # if trend
-    #     ltrend = collect(1.0:size(Z, 1))
-    #     Z = hcat(ltrend, Z)
-    # end
-    # if constant
-    #     Z = hcat(ones(Float64, size(Z, 1)), Z)
-    # end
-    # return Z
-    rhsy, rhsx
+    if trend
+        ltrend = collect(1.0:size(Z, 1))
+        rhsy = hcat(ltrend, rhsy)
+    end
+    if constant
+        rhsy = hcat(ones(Float64, size(rhsy, 1)), rhsy)
+    end
+    return rhsy
 end
 
 function lag_matrix(x::T, lag::Int) where {T<:AbstractMatrix}
