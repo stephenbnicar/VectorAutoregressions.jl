@@ -16,13 +16,18 @@ function varols(y::Matrix, ylag::Int; constant::Bool=true, trend::Bool=false)
 
     # Coefficient estimates
     B = (rhs'*rhs)\(rhs'*lhs) # each column corresponds to an equation
+    A = B[(constant+trend+1):end, :]
+    ν = constant == true ? B[1:constant+trend, :] : []
+    U = lhs - rhs*B
+    Σᵤ = (U'*U)/(size(lhs, 1) - size(B, 1))
+    return ν, A, U, Σᵤ
 end
 
 
 function rhs_matrix(y, ylag, constant, trend)
     rhsy = lag_matrix(y, ylag)
     if trend
-        ltrend = collect(1.0:size(Z, 1))
+        ltrend = collect(1.0:size(rhsy, 1))
         rhsy = hcat(ltrend, rhsy)
     end
     if constant
