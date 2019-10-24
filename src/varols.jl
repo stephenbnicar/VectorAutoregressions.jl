@@ -20,7 +20,9 @@ function varols(y::Matrix, ylag::Int; constant::Bool=true, trend::Bool=false)
     ν = constant == true ? B[1:constant+trend, :] : []
     U = lhs - rhs*B
     Σᵤ = (U'*U)/(size(lhs, 1) - size(B, 1))
-    return ν, A, U, Σᵤ
+    ΣB = kron(Σᵤ, inv(rhs'*rhs))  # see Lutkepohl p.80
+    seB = sqrt.(reshape(diag(ΣB), size(B, 1), size(B, 2)))
+    return ν, A, U, Σᵤ, seB
 end
 
 
