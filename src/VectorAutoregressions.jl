@@ -4,9 +4,11 @@ using  DataFrames
 using  Distributions, StatsBase
 using  LinearAlgebra
 
-export varols
+abstract type AbstractVarModel end
 
-include("varmodels.jl")
-include("varols.jl")
+export VAR
+
+include("matrix_utilities.jl")
+include("VAR.jl")
 
 end # module
