@@ -1,5 +1,11 @@
 # Define structs for VAR models
-mutable struct VarModel
+
+abstract type VarModelEstimators end
+
+
+
+mutable struct VarModel{E}
+
     data
     lags::Int
     constant::Bool
