@@ -18,7 +18,7 @@ Fields (in addition to the arguments above):
 * `vcov_residuals` : Variance-covariance matrix of residuals
 ---
 """
-struct VAR <: AbstractVARModel
+struct VAR <: AbstractVarModel
     data::Matrix
     lags::Int
     constant::Bool
