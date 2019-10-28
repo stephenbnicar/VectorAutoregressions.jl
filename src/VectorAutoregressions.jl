@@ -1,8 +1,8 @@
 module VectorAutoregressions
 
-using  DataFrames, TimeSeries
-using  Distributions, StatsBase
-using  Dates, LinearAlgebra
+using DataFrames, TimeSeries
+using Distributions, StatsBase
+using Dates, LinearAlgebra
 
 abstract type AbstractVarModel end
 

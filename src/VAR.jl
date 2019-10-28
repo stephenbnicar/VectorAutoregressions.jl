@@ -48,10 +48,10 @@ function varols(y, ylag, constant, trend)
     # Set up LHS Matrix
     Y = y[ylag+1:end, :]
     # Coefficient estimates
-    B = (Z'*Z)\(Z'*Y) # each column corresponds to an equation
-    U = Y - Z*B
-    Σᵤ = (U'*U)/(size(Y, 1) - size(B, 1))
-    ΣB = kron(Σᵤ, inv(Z'*Z))  # see Lutkepohl p.80
+    B = (Z' * Z) \ (Z' * Y) # each column corresponds to an equation
+    U = Y - Z * B
+    Σᵤ = (U' * U) / (size(Y, 1) - size(B, 1))
+    ΣB = kron(Σᵤ, inv(Z' * Z))  # see Lutkepohl p.80
     seB = sqrt.(reshape(diag(ΣB), size(B, 1), size(B, 2)))
     return B, U, seB, Σᵤ
 end

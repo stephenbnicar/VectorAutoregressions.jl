@@ -2,9 +2,9 @@
 
 function lag_matrix(x::T, lag::Int) where {T<:AbstractMatrix}
     nobs, nx = size(x)
-    xlag = zeros(nobs - lag, nx*lag)
+    xlag = zeros(nobs - lag, nx * lag)
     for i = 1:lag
-       xlag[1:(nobs - lag), (nx*(i - 1) + 1):(nx*i)] = x[(lag+1-i):(nobs-i), 1:nx]
+        xlag[1:(nobs-lag), (nx*(i-1)+1):(nx*i)] = x[(lag+1-i):(nobs-i), 1:nx]
     end
     return xlag
 end
@@ -21,7 +21,7 @@ Construct the companion matrix for `A`.
 """
 function comp_matrix(A, p)
     K = size(A, 2)
-    subI = [Matrix(1.0I, K*(p-1), K*(p-1)) zeros(K*(p-1), K)]
+    subI = [Matrix(1.0I, K * (p - 1), K * (p - 1)) zeros(K * (p - 1), K)]
     Acomp = vcat(A', subI)
     return Acomp
 end
