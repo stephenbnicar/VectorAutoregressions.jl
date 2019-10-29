@@ -33,12 +33,17 @@ function VAR(data::Matrix, lags; constant::Bool = true, trend::Bool = false)
     if lags > size(data, 1)
         error("Number of lags is greater than number of observations.")
     end
-    B, U, seB, Σᵤ = varols(y, ylag, constant, trend)
-    VAR(data, lags, constant, trend, B, seB, U, Σ)
+    B, U, seB, Σᵤ = varols(data, lags, constant, trend)
+    VAR(data, lags, constant, trend, B, seB, U, Σᵤ)
 end
 
 function VAR(data::DataFrame, lags; constant::Bool = true, trend::Bool = false)
     data = Matrix(data)
+    VAR(data, lags; constant = constant, trend = trend)
+end
+
+function VAR(data::TimeArray, lags; constant::Bool = true, trend::Bool = false)
+    data = DataFrame(data)[:, 2:end]
     VAR(data, lags; constant = constant, trend = trend)
 end
 
