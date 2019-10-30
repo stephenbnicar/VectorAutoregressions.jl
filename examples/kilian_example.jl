@@ -13,4 +13,6 @@ data_df.timestamp = dates
 # TimeArray
 data_ts = TimeArray(data_df, timestamp = :timestamp)
 
-var_df = VAR(data_df, 4)
+var_df = VAR(data_df[!, 1:3], 4)
+
+var_ts = VAR(data_ts, 4)
