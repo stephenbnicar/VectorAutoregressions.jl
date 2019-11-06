@@ -12,7 +12,8 @@ data_df.timestamp = dates
 
 # TimeArray
 data_ts = TimeArray(data_df, timestamp = :timestamp)
+data_mat = Matrix(data_df[!, 1:3])
 
-var_df = VAR(data_df[!, 1:3], 4)
-
-var_ts = VAR(data_ts, 4)
+var_mat = VAR(data_mat, 4)
+var_df  = VAR(data_df[!, 1:3], 4)
+var_ts  = VAR(data_ts, 4)

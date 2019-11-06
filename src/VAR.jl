@@ -15,21 +15,21 @@ Fields (in addition to the arguments above):
 * `coef` : Matrix of coefficient estimates; each column corresponds to an equation
 * `residuals` : Matrix of residuals; each column corresponds to an equation
 * `se_coef` : Matrix of standard errors of coefficient estimates
-* `vcov_residuals` : Variance-covariance Matrix{Float64} of residuals
+* `vcov_residuals` : Variance-covariance Matrix of residuals
 ---
 """
 struct VAR <: AbstractVarModel
-    data::Matrix{Float64}
+    data::Matrix
     lags::Int
     constant::Bool
     trend::Bool
-    coef::Matrix{Float64}
-    se_coef::Matrix{Float64}
-    residuals::Matrix{Float64}
-    vcov_resid::Matrix{Float64}
+    coef::Matrix
+    se_coef::Matrix
+    residuals::Matrix
+    vcov_residuals::Matrix
 end
 
-function VAR(data::Matrix{Float64}, lags; constant::Bool = true, trend::Bool = false)
+function VAR(data::Matrix, lags; constant::Bool = true, trend::Bool = false)
     if lags > size(data, 1)
         error("Number of lags is greater than number of observations.")
     end
@@ -48,9 +48,9 @@ function VAR(data::TimeArray, lags; constant::Bool = true, trend::Bool = false)
 end
 
 function varols(y, ylag, constant, trend)
-    # Set up RHS Matrix{Float64}
+    # Set up RHS Matrix
     Z = rhs_matrix(y, ylag, constant, trend)
-    # Set up LHS Matrix{Float64}
+    # Set up LHS Matrix
     Y = y[ylag+1:end, :]
     # Coefficient estimates
     B = (Z' * Z) \ (Z' * Y) # each column corresponds to an equation
