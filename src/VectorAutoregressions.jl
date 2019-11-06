@@ -6,10 +6,13 @@ using Dates, LinearAlgebra
 
 abstract type AbstractVarModel end
 
-export VAR
+export  VAR,
+        LagSelectionCriteria,
+        lagselect
 
 include("matrix_utilities.jl")
 include("diagnostics.jl")
+include("lag_selection.jl")
 include("VAR.jl")
 
 end # module
