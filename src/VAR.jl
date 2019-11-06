@@ -1,11 +1,11 @@
 """
-    VAR(data, lags, constant::Bool = true, trend::Bool = false)
+    VAR(data, lags, constant::Bool = true, trend::Bool = false) -> VAR
 
-Estimate a vector autoregression (VAR) using OLS.
+Estimate an unrestricted vector autoregression (VAR) using OLS.
 
 Arguments:
 ---
-* `data` : Matrix or DataFrame of observations on endogenous variables
+* `data` : `Matrix`, `DataFrame`, or `TimeArray` of observations on endogenous variables
 * `lags` : the number of lags
 * `constant` : boolean to indicate inclusion of intercept term (default is `true`)
 * `trend` : boolean to indicate inclusion of a linear trend
