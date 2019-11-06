@@ -9,6 +9,11 @@ function loglikelihood(v::VAR)
     ll = -(K * obs / 2) * log(2π) - (obs / 2) * logdet(Σᵤ) - 0.5 * sssr
 end
 
+"""
+    aic(v::VectorAutoregressions.VAR)
+
+Calculate Akaike's Information Criterion for the VAR model `v`.
+"""
 function aic(v::VAR)
     obs, K = size(v.residuals)
     nparam = size(v.coef, 1)
@@ -17,6 +22,11 @@ function aic(v::VAR)
     return logdet(Σ) + (2 / obs) * nparam * K
 end
 
+"""
+    bic(v::VectorAutoregressions.VAR)
+
+Calculate the Schwarz (Bayesian) Information Criterion for the VAR model `v`.
+"""
 function bic(v::VAR)
     obs, K = size(v.residuals)
     nparam = size(v.coef, 1)
@@ -25,6 +35,11 @@ function bic(v::VAR)
     return logdet(Σ) + (log(obs) / obs) * nparam * K
 end
 
+"""
+    hqc(v::VectorAutoregressions.VAR)
+
+Calculate the Hannan-Quinn Criterion for the VAR model `v`.
+"""
 function hqc(v::VAR)
     obs, K = size(v.residuals)
     nparam = size(v.coef, 1)
