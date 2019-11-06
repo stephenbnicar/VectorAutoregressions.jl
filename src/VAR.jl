@@ -16,6 +16,7 @@ Fields (in addition to the arguments above):
 * `residuals` : Matrix of residuals; each column corresponds to an equation
 * `se_coef` : Matrix of standard errors of coefficient estimates
 * `vcov_residuals` : Variance-covariance matrix of residuals
+* `loglikelihood` : log likelihood of the estimated VAR
 ---
 """
 struct VAR <: AbstractVarModel
@@ -27,6 +28,9 @@ struct VAR <: AbstractVarModel
     se_coef::Matrix
     residuals::Matrix
     vcov_resid::Matrix
+    loglikelihood:: Float64
+    # inf_crit::Dict
+
 end
 
 function VAR(data::Matrix, lags; constant::Bool = true, trend::Bool = false)
@@ -34,7 +38,8 @@ function VAR(data::Matrix, lags; constant::Bool = true, trend::Bool = false)
         error("Number of lags is greater than number of observations.")
     end
     B, U, seB, Σᵤ = varols(data, lags, constant, trend)
-    VAR(data, lags, constant, trend, B, seB, U, Σᵤ)
+    ll = loglikelihood(U, Σᵤ)
+    VAR(data, lags, constant, trend, B, seB, U, Σᵤ, ll)
 end
 
 function VAR(data::DataFrame, lags; constant::Bool = true, trend::Bool = false)
