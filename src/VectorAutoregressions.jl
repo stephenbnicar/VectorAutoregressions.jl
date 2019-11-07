@@ -4,6 +4,7 @@ using DataFrames, TimeSeries
 using Distributions
 using Dates, LinearAlgebra
 
+import Base: show
 import StatsBase: loglikelihood, aic
 
 abstract type AbstractVarModel end
@@ -11,9 +12,8 @@ abstract type AbstractVarModel end
 export  VAR,
         LagSelectionCriteria,
         loglikelihood,
-        aic,
-        bic,
-        hqc
+        aic, sic, hqc,
+        lagselect
 
 include("matrix_utilities.jl")
 include("VAR.jl")

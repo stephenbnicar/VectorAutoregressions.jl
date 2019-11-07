@@ -1,3 +1,8 @@
+"""
+    loglikelihood(v::VectorAutoregressions.VAR)
+
+Calculate log likelihood for the VAR model `v`.
+"""
 function loglikelihood(v::VAR)
     U = v.residuals
     Σᵤ = v.vcov_residuals
@@ -23,11 +28,11 @@ function aic(v::VAR)
 end
 
 """
-    bic(v::VectorAutoregressions.VAR)
+    sic(v::VectorAutoregressions.VAR)
 
 Calculate the Schwarz (Bayesian) Information Criterion for the VAR model `v`.
 """
-function bic(v::VAR)
+function sic(v::VAR)
     obs, K = size(v.residuals)
     nparam = size(v.coef, 1)
     Σᵤ = v.vcov_residuals
