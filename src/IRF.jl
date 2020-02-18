@@ -10,9 +10,9 @@ function IRF(v::VAR, h; boot::Bool = false, reps::Int = 500, ci::Float64 = 0.95,
     p = v.lags
     constant = v.constant
     trend    = v.trend
-    B = v.coef
-    U = v.residuals
-    Σ = v.vcov_residuals
+    B = v.B
+    U = v.U
+    Σ = v.ΣU
 
     K = size(B, 2)
     ϕ = simple_irf(B, K, p, h+1)

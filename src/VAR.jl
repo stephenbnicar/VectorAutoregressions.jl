@@ -12,10 +12,10 @@ Arguments:
 
 Fields (in addition to the arguments above):
 ---
-* `coef` : Matrix of coefficient estimates; each column corresponds to an equation
-* `residuals` : Matrix of residuals; each column corresponds to an equation
-* `se_coef` : Matrix of standard errors of coefficient estimates
-* `vcov_residuals` : Variance-covariance Matrix of residuals
+* `B` : Matrix of coefficient estimates; each column corresponds to an equation
+* `U` : Matrix of residuals; each column corresponds to an equation
+* `seB` : Matrix of standard errors of coefficient estimates
+* `ΣU` : Variance-covariance matrix of residuals
 ---
 """
 struct VAR <: AbstractVarModel
@@ -23,8 +23,8 @@ struct VAR <: AbstractVarModel
     lags::Int
     constant::Bool
     trend::Bool
-    coef::Matrix
-    se_coef::Matrix
+    B::Matrix
+    seB::Matrix
     residuals::Matrix
     vcov_residuals::Matrix
 end
@@ -33,8 +33,8 @@ function VAR(data::Matrix, lags; constant::Bool = true, trend::Bool = false)
     if lags > size(data, 1)
         error("Number of lags is greater than number of observations.")
     end
-    B, U, seB, Σᵤ = varols(data, lags, constant, trend)
-    VAR(data, lags, constant, trend, B, seB, U, Σᵤ)
+    B, U, seB, ΣU = varols(data, lags, constant, trend)
+    VAR(data, lags, constant, trend, B, seB, U, ΣU)
 end
 
 function VAR(data::DataFrame, lags; constant::Bool = true, trend::Bool = false)
@@ -55,8 +55,12 @@ function varols(y, ylag, constant, trend)
     # Coefficient estimates
     B = (Z' * Z) \ (Z' * Y) # each column corresponds to an equation
     U = Y - Z * B
-    Σᵤ = (U' * U) / (size(Y, 1) - size(B, 1))
-    ΣB = kron(Σᵤ, inv(Z' * Z))  # see Lutkepohl p.80
+    ΣU = (U' * U) / (size(Y, 1) - size(B, 1))
+    ΣB = kron(ΣU, inv(Z' * Z))  # see Lutkepohl p.80
     seB = sqrt.(reshape(diag(ΣB), size(B, 1), size(B, 2)))
-    return B, U, seB, Σᵤ
+    return B, U, seB, ΣU
 end
+
+function coef(v::VectorAutoregressions.VAR) = v.B
+function stderror(v::VectorAutoregressions.VAR) = v.seB
+function residuals(v::VectorAutoregressions.VAR) = v.U
