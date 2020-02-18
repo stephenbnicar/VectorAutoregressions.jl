@@ -61,6 +61,6 @@ function varols(y, ylag, constant, trend)
     return B, U, seB, ΣU
 end
 
-function coef(v::VectorAutoregressions.VAR) = v.B
-function stderror(v::VectorAutoregressions.VAR) = v.seB
-function residuals(v::VectorAutoregressions.VAR) = v.U
+coef(v::VectorAutoregressions.VAR) = v.B
+stderror(v::VectorAutoregressions.VAR) = v.seB
+residuals(v::VectorAutoregressions.VAR) = v.U
