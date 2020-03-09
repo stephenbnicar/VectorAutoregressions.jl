@@ -86,8 +86,8 @@ function bootstrap_irf_ci(Y, p, c, t, B, U, h; reps=500, ci=0.95)
     for rep = 1:reps
         Ysim     = simulate_var(B, K, p, c, t, uobs; presample = ps, resid = U)
         simVAR   = VAR(Ysim, p; constant = c, trend = t)
-        simB     = simVAR.coef
-        simSigma = simVAR.vcov_residuals
+        simB     = simVAR.B
+        simSigma = simVAR.ΣU
         sim_sirf = simple_irf(simB, K, p, h+1)
         sim_oirf = orthogonalize_irf(sim_sirf, simSigma, K, h)
         #=============
