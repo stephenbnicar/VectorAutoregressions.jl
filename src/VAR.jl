@@ -25,8 +25,8 @@ struct VAR <: AbstractVarModel
     trend::Bool
     B::Matrix
     seB::Matrix
-    residuals::Matrix
-    vcov_residuals::Matrix
+    U::Matrix
+    ΣU::Matrix
 end
 
 function VAR(data::Matrix, lags; constant::Bool = true, trend::Bool = false)
