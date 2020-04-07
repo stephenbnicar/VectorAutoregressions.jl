@@ -9,7 +9,7 @@ import StatsBase: loglikelihood, aic, sample, coef, stderror, residuals
 
 abstract type AbstractVarModel end
 
-export  VAR, IRF,
+export  VarEstimate, VAR, IRF,
         LagSelectionCriteria,
         loglikelihood,
         aic, sic, hqc,

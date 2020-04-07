@@ -28,7 +28,7 @@ Arguments:
 """
 function lagselect(
     data::Matrix,
-    maxlag;
+    maxlag::Int;
     constant::Bool = true,
     trend::Bool = false,
 )
@@ -52,7 +52,7 @@ end
 
 function lagselect(
     data::DataFrame,
-    maxlag;
+    maxlag::Int;
     constant::Bool = true,
     trend::Bool = false,
 )
@@ -62,7 +62,7 @@ end
 
 function lagselect(
     data::TimeArray,
-    maxlag;
+    maxlag::Int;
     constant::Bool = true,
     trend::Bool = false,
 )

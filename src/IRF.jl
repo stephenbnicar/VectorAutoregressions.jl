@@ -4,7 +4,7 @@ struct IRF
     lower::Array
 end
 
-function IRF(v::VAR, h; boot::Bool = false, reps::Int = 500, ci::Float64 = 0.95,
+function IRF(v::VarEstimate, h; boot::Bool = false, reps::Int = 500, ci::Float64 = 0.95,
              cumulate = false, nm = false)
     Y = v.data
     p = v.lags

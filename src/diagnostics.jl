@@ -1,9 +1,9 @@
 """
-    loglikelihood(v::VectorAutoregressions.VAR)
+    loglikelihood(v::VarEstimate)
 
 Calculate log likelihood for the VAR model `v`.
 """
-function loglikelihood(v::VAR)
+function loglikelihood(v::VarEstimate)
     U = residuals(v)
     ΣU = v.ΣU
     obs, K = size(U)
@@ -15,11 +15,11 @@ function loglikelihood(v::VAR)
 end
 
 """
-    aic(v::VectorAutoregressions.VAR)
+    aic(v::VarEstimate)
 
 Calculate Akaike's Information Criterion for the VAR model `v`.
 """
-function aic(v::VAR)
+function aic(v::VarEstimate)
     obs, K = size(residuals(v))
     nparam = size(coef(v), 1)
     ΣU = v.ΣU
@@ -28,11 +28,11 @@ function aic(v::VAR)
 end
 
 """
-    sic(v::VectorAutoregressions.VAR)
+    sic(v::VarEstimate)
 
 Calculate the Schwarz (Bayesian) Information Criterion for the VAR model `v`.
 """
-function sic(v::VAR)
+function sic(v::VarEstimate)
     obs, K = size(residuals(v))
     nparam = size(coef(v), 1)
     ΣU = v.ΣU
@@ -41,11 +41,11 @@ function sic(v::VAR)
 end
 
 """
-    hqc(v::VectorAutoregressions.VAR)
+    hqc(v::VarEstimate)
 
 Calculate the Hannan-Quinn Criterion for the VAR model `v`.
 """
-function hqc(v::VAR)
+function hqc(v::VarEstimate)
     obs, K = size(residuals(v))
     nparam = size(coef(v), 1)
     ΣU = v.ΣU

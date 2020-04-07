@@ -1,24 +1,4 @@
-"""
-    VAR(data, lags, constant::Bool = true, trend::Bool = false) -> VAR
-
-Estimate an unrestricted vector autoregression (VAR) using OLS.
-
-Arguments:
----
-* `data` : `Matrix`, `DataFrame`, or `TimeArray` of observations on endogenous variables
-* `lags` : the number of lags
-* `constant` : boolean to indicate inclusion of intercept term (default is `true`)
-* `trend` : boolean to indicate inclusion of a linear trend
-
-Fields (in addition to the arguments above):
----
-* `B` : Matrix of coefficient estimates; each column corresponds to an equation
-* `U` : Matrix of residuals; each column corresponds to an equation
-* `seB` : Matrix of standard errors of coefficient estimates
-* `ΣU` : Variance-covariance matrix of residuals
----
-"""
-struct VAR <: AbstractVarModel
+struct VarEstimate
     data::Matrix
     lags::Int
     constant::Bool
@@ -29,12 +9,25 @@ struct VAR <: AbstractVarModel
     ΣU::Matrix
 end
 
+"""
+    VAR(data, lags, constant::Bool = true, trend::Bool = false) -> VarEstimate
+
+Estimate an unrestricted vector autoregression (VAR) using OLS.
+
+Arguments:
+---
+* `data` : `Matrix`, `DataFrame`, or `TimeArray` of observations on endogenous variables
+* `lags` : the number of lags
+* `constant` : boolean to indicate inclusion of intercept term (default is `true`)
+* `trend` : boolean to indicate inclusion of a linear trend
+---
+"""
 function VAR(data::Matrix, lags; constant::Bool = true, trend::Bool = false)
     if lags > size(data, 1)
         error("Number of lags is greater than number of observations.")
     end
     B, U, seB, ΣU = varols(data, lags, constant, trend)
-    VAR(data, lags, constant, trend, B, seB, U, ΣU)
+    VarEstimate(data, lags, constant, trend, B, seB, U, ΣU)
 end
 
 function VAR(data::DataFrame, lags; constant::Bool = true, trend::Bool = false)
@@ -61,6 +54,38 @@ function varols(y, ylag, constant, trend)
     return B, U, seB, ΣU
 end
 
-coef(v::VectorAutoregressions.VAR) = v.B
-stderror(v::VectorAutoregressions.VAR) = v.seB
-residuals(v::VectorAutoregressions.VAR) = v.U
+coef(v::VarEstimate) = v.B
+stderror(v::VarEstimate) = v.seB
+residuals(v::VarEstimate) = v.U
+
+
+
+# varresult
+# list of ‘lm’ objects.
+#
+# datamat
+# The data matrix of the endogenous and explanatory variables.
+#
+# y
+# The data matrix of the endogenous variables
+#
+# type
+# A character, specifying the deterministic regressors.
+#
+# p
+# An integer specifying the lag order.
+#
+# K
+# An integer specifying the dimension of the VAR.
+#
+# obs
+# An integer specifying the number of used observations.
+#
+# totobs
+# An integer specifying the total number of observations.
+#
+# restrictions
+# Either NULL or a matrix object containing the zero restrictions of the VAR(p).
+#
+# call
+# The call to VAR().
