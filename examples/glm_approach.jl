@@ -33,3 +33,5 @@ names!(data_all_df, [names(data_df); names(rhs)])
 var_glm = lm(fterm, data_all_df)
 
 var = VAR(data_df, 1)
+
+# See Econometrics.jl/statsbase.jl for coeftable example
