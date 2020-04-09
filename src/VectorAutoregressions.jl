@@ -14,7 +14,7 @@ export  VarEstimate, VAR, IRF,
         LagSelectionCriteria,
         loglikelihood,
         aic, sic, hqc,
-        coef, stderror, residuals, coeftable
+        coef, stderror, residuals, coeftable,
         lagselect
 
 include("matrix_utilities.jl")
