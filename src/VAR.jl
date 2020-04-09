@@ -54,9 +54,7 @@ function varols(y, ylag, constant, trend)
     return B, U, seB, ΣU
 end
 
-coef(v::VarEstimate) = v.B
-stderror(v::VarEstimate) = v.seB
-residuals(v::VarEstimate) = v.U
+
 
 
 
