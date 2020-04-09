@@ -1,7 +1,7 @@
 """
     sic(v::VarEstimate)
 
-Calculate the Schwarz (Bayesian) Information Criterion for the VAR model `v`.
+Return the Schwarz (Bayesian) Information Criterion for VAR model `v`.
 """
 function sic(v::VarEstimate)
     obs, K = size(residuals(v))
@@ -14,7 +14,7 @@ end
 """
     hqc(v::VarEstimate)
 
-Calculate the Hannan-Quinn Criterion for the VAR model `v`.
+Return the Hannan-Quinn Criterion for VAR model `v`.
 """
 function hqc(v::VarEstimate)
     obs, K = size(residuals(v))

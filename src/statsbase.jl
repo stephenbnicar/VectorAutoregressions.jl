@@ -1,11 +1,28 @@
+"""
+    coef(v::VarEstimate)
+
+Return the matrix of coefficients for VAR model `v`.
+"""
 coef(v::VarEstimate) = v.B
+
+"""
+    stderror(v::VarEstimate)
+
+Return the standard errors for the coefficients of VAR model `v`.
+"""
 stderror(v::VarEstimate) = v.seB
+
+"""
+    residuals(v::VarEstimate)
+
+Return the matrix of residuals for VAR model `v`.
+"""
 residuals(v::VarEstimate) = v.U
 
 """
     loglikelihood(v::VarEstimate)
 
-Calculate log likelihood for the VAR model `v`.
+Return the log-likelihood for VAR model `v`.
 """
 function loglikelihood(v::VarEstimate)
     U = residuals(v)
@@ -21,7 +38,7 @@ end
 """
     aic(v::VarEstimate)
 
-Calculate Akaike's Information Criterion for the VAR model `v`.
+Return Akaike's Information Criterion for VAR model `v`.
 """
 function aic(v::VarEstimate)
     obs, K = size(residuals(v))
