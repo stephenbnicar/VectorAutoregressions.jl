@@ -54,6 +54,12 @@ function varols(y, ylag, constant, trend)
     return B, U, seB, ΣU
 end
 
+function show(io::IO, v::VarEstimate)
+    println(io, "VAR Estimation Results")
+    println(io, "====================================")
+    println(io, "Fields: data, lags, constant, trend,")
+    println(io, "        B, seB, U, ΣU")
+end
 
 
 
