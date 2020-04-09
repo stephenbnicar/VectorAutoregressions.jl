@@ -1,0 +1,56 @@
+## coefficient tables with specialized show method
+
+mutable struct CoefTable
+    cols::Vector
+    colnms::Vector
+    rownms::Vector
+    pvalcol::Int
+    teststatcol::Int
+    function CoefTable(cols::Vector,colnms::Vector,rownms::Vector,
+                       pvalcol::Int=0,teststatcol::Int=0)
+        nc = length(cols)
+        nrs = map(length,cols)
+        nr = nrs[1]
+        length(colnms) in [0,nc] || throw(ArgumentError("colnms should have length 0 or $nc"))
+        length(rownms) in [0,nr] || throw(ArgumentError("rownms should have length 0 or $nr"))
+        all(nrs .== nr) || throw(ArgumentError("Elements of cols should have equal lengths, but got $nrs"))
+        pvalcol in 0:nc || throw(ArgumentError("pvalcol should be between 0 and $nc"))
+        teststatcol in 0:nc || throw(ArgumentError("teststatcol should be between 0 and $nc"))
+        new(cols,colnms,rownms,pvalcol,teststatcol)
+    end
+
+    function CoefTable(mat::Matrix,colnms::Vector,rownms::Vector,
+                       pvalcol::Int=0,teststatcol::Int=0)
+        nc = size(mat,2)
+        cols = Any[mat[:, i] for i in 1:nc]
+        CoefTable(cols,colnms,rownms,pvalcol,teststatcol)
+    end
+end
+
+function coeftable(obj::EconometricModel; level::Real = 0.95, vce::VCE = obj.vce)
+    β = coef(obj)
+    σ = stderror(obj, vce)
+    t = β ./ σ
+    p = 2 * ccdf.(TDist(dof_residual(obj)), abs.(t))
+    mat = hcat(β, σ, t, p, confint(obj, se = σ, level = level))
+    lims = (100 * (1 - level) / 2, 100 * (1 - (1 - level) / 2))
+    colnms = [
+        "PE   ",
+        "SE   ",
+        "t-value",
+        "Pr > |t|",
+        string(@sprintf("%.2f", lims[1]), "%"),
+        string(@sprintf("%.2f", lims[2]), "%"),
+    ]
+    rownms = coefnames(obj)[2]
+    CoefTable(mat, colnms, rownms, 4)
+end
+
+
+
+
+
+
+
+
+
