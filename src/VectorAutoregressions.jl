@@ -23,5 +23,6 @@ include("statsbase.jl")
 include("IRF.jl")
 include("diagnostics.jl")
 include("lag_selection.jl")
+include("coeftable.jl")
 
 end # module

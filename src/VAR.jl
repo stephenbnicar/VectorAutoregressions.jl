@@ -55,10 +55,16 @@ function varols(y, ylag, constant, trend)
 end
 
 function show(io::IO, v::VarEstimate)
-    println(io, "VAR Estimation Results")
-    println(io, "====================================")
-    println(io, "Fields: data, lags, constant, trend,")
-    println(io, "        B, seB, U, ΣU")
+    ct = coeftable(v)
+    K = length(ct)
+    println(io, "VAR Estimation Results:")
+    println(io, "=======================")
+    for k = 1:K
+        println(io)
+        println(io, "Estimates for equation $k:")
+        show(io, ct[k])
+        println(io)
+    end
 end
 
 
@@ -93,3 +99,18 @@ end
 #
 # call
 # The call to VAR().
+
+# VAR Estimation Results:
+# =========================
+# Endogenous variables: e, prod, rw, U
+# Deterministic variables: const
+# Sample size: 82
+# Log Likelihood: -175.819
+# Roots of the characteristic polynomial:
+# 0.995 0.9081 0.9081 0.7381 0.7381 0.1856 0.1429 0.1429
+# Call:
+# VAR(y = Canada, p = 2, type = "const")
+#
+#
+# Estimation results for equation e:
+# ==================================
