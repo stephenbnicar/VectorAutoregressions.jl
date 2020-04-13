@@ -1,5 +1,5 @@
 struct VarEstimate
-    data::Matrix
+    data::Union{DataFrame,TimeArray}
     lags::Int
     constant::Bool
     trend::Bool
@@ -16,23 +16,19 @@ Estimate an unrestricted vector autoregression (VAR) using OLS.
 
 Arguments:
 ---
-* `data` : `Matrix`, `DataFrame`, or `TimeArray` of observations on endogenous variables
+* `data` : `DataFrame` or `TimeArray` of observations on endogenous variables
 * `lags` : the number of lags
 * `constant` : boolean to indicate inclusion of intercept term (default is `true`)
 * `trend` : boolean to indicate inclusion of a linear trend
 ---
 """
-function VAR(data::Matrix, lags; constant::Bool = true, trend::Bool = false)
+function VAR(data::DataFrame, lags; constant::Bool = true, trend::Bool = false)
     if lags > size(data, 1)
         error("Number of lags is greater than number of observations.")
     end
-    B, U, seB, ΣU = varols(data, lags, constant, trend)
+    datamat = Matrix(data)
+    B, U, seB, ΣU = varols(datamat, lags, constant, trend)
     VarEstimate(data, lags, constant, trend, B, seB, U, ΣU)
-end
-
-function VAR(data::DataFrame, lags; constant::Bool = true, trend::Bool = false)
-    data = Matrix(data)
-    VAR(data, lags; constant = constant, trend = trend)
 end
 
 function VAR(data::TimeArray, lags; constant::Bool = true, trend::Bool = false)
@@ -59,6 +55,9 @@ function show(io::IO, v::VarEstimate)
     K = length(ct)
     println(io, "VAR Estimation Results:")
     println(io, "=======================")
+    println(io, "Endogenous variables:")
+    println(io, "Deterministic variables:")
+    println(io, "Sample size:")
     for k = 1:K
         println(io)
         println(io, "Estimates for equation $k:")
