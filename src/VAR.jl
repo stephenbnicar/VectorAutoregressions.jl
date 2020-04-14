@@ -57,8 +57,8 @@ end
 function show(io::IO, v::VarEstimate)
     ct = coeftable(v)
     K = length(ct)
-    println(io, "VAR Estimation Results:")
-    println(io, "=======================")
+    println(io, "VAR Estimation Results")
+    println(io, "======================")
     print(io, "Endogenous variables: ")
     for k = 1:K
         print(io, "$(v.varnames[k]) ")

@@ -25,14 +25,14 @@ function coeftable(v::VarEstimate)
 
     ctable = Array{CoefTable}(undef, K)
     for k = 1:K
-        Bk   = B[:, k]
-        seBk = seB[:, k]
+        Bk   = round.(B[:, k], sigdigits=4)
+        seBk = round.(seB[:, k], sigdigits=4)
         tk = Bk ./ seBk
         pk = 2 * ccdf.(TDist(dofr), abs.(tk))
         # mat = hcat(Bk, seBk, tk)
         mat = hcat(Bk, seBk, tk, pk)
         # ctable[k] = CoefTable(mat, colnms, rownms)
-        ctable[k] = CoefTable(mat, colnms, rownms, 4)
+        ctable[k] = CoefTable(mat, colnms, rownms, 4, 3)
     end
     return ctable
 end
