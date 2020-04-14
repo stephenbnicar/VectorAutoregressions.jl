@@ -3,9 +3,9 @@ using Statistics
 using DataFrames
 
 cd(@__DIR__)
-fedfunds = CSV.read("fedfunds.txt"; header=0)
-deflator = CSV.read("gnpdeflator.txt", header=0)
-rgdp = CSV.read("realgnp.txt", header=0)
+fedfunds = CSV.read("./source_data/fedfunds.txt"; header=0)
+deflator = CSV.read("./source_data/gnpdeflator.txt", header=0)
+rgdp = CSV.read("./source_data/realgnp.txt", header=0)
 
 irate = Vector{Float64}()
 for i=1:3:length(fedfunds[:,3])

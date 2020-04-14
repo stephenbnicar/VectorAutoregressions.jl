@@ -61,13 +61,13 @@ function lagselect(
 end
 
 function show(io::IO, ls::LagSelectionCriteria)
-    println(io, "VAR Lag Selection Criteria")
-    println(io, "---------------------------")
+    println(io, "VAR Lag Selection")
+    println(io, "-------------------------")
     println(io, "maxlag: ", ls.maxlag)
     println(io, "Criterion   Lag Selection")
-    println(io, "---------------------------")
+    println(io, "-------------------------")
     for k in keys(ls.selection)
         println(io, rpad(string(k), 16), ls.selection[k])
     end
-    println(io, "---------------------------")
+    println(io, "-------------------------")
 end

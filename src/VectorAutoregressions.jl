@@ -1,7 +1,7 @@
 module VectorAutoregressions
 
 using DataFrames, TimeSeries
-using Distributions
+using Distributions: ccdf, TDist
 using Dates, LinearAlgebra
 using StatsBase: CoefTable
 

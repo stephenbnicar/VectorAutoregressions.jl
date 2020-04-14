@@ -4,7 +4,7 @@ using CSV, DataFrames, TimeSeries, GLM
 using VectorAutoregressions
 using Dates
 
-data_df = CSV.read("kilian_data.csv")
+data_df = CSV.read("../examples/kilian_data.csv")
 data_mat = Matrix(data_df)
 
 endog_vars = string.(names(data_df))
@@ -33,5 +33,3 @@ names!(data_all_df, [names(data_df); names(rhs)])
 var_glm = lm(fterm, data_all_df)
 
 var = VAR(data_df, 1)
-
-# See Econometrics.jl/statsbase.jl for coeftable example

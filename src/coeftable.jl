@@ -3,17 +3,21 @@ function coeftable(v::VarEstimate)
     seB = stderror(v)
     m, K = size(B)
     lags = v.lags
+    varnames = v.varnames
+    obs = v.obs
+    dofr = obs - m
 
     colnms = [
         "Estimate",
         "Std. Error",
         "t value",
+        "Pr > |t|",
     ]
 
     rownms = Vector{String}()
     for l = 1:lags
         for k = 1:K
-            push!(rownms, "y$k.l$l")
+            push!(rownms, "$(varnames[k]).l$l")
         end
     end
     rownms = v.trend ? ["trend"; rownms] : rownms
@@ -24,8 +28,11 @@ function coeftable(v::VarEstimate)
         Bk   = B[:, k]
         seBk = seB[:, k]
         tk = Bk ./ seBk
-        mat = hcat(Bk, seBk, tk)
-        ctable[k] = CoefTable(mat, colnms, rownms)
+        pk = 2 * ccdf.(TDist(dofr), abs.(tk))
+        # mat = hcat(Bk, seBk, tk)
+        mat = hcat(Bk, seBk, tk, pk)
+        # ctable[k] = CoefTable(mat, colnms, rownms)
+        ctable[k] = CoefTable(mat, colnms, rownms, 4)
     end
     return ctable
 end

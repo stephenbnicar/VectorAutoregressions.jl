@@ -1,8 +1,10 @@
 struct VarEstimate
     data::Union{DataFrame,TimeArray}
+    varnames::Array{String}
     lags::Int
     constant::Bool
     trend::Bool
+    obs::Int
     B::Matrix
     seB::Matrix
     U::Matrix
@@ -26,9 +28,11 @@ function VAR(data::DataFrame, lags; constant::Bool = true, trend::Bool = false)
     if lags > size(data, 1)
         error("Number of lags is greater than number of observations.")
     end
+    varnames = String.(names(data))
     datamat = Matrix(data)
+    obs = size(datamat, 1) - lags
     B, U, seB, ΣU = varols(datamat, lags, constant, trend)
-    VarEstimate(data, lags, constant, trend, B, seB, U, ΣU)
+    VarEstimate(data, varnames, lags, constant, trend, obs, B, seB, U, ΣU)
 end
 
 function VAR(data::TimeArray, lags; constant::Bool = true, trend::Bool = false)
@@ -55,12 +59,16 @@ function show(io::IO, v::VarEstimate)
     K = length(ct)
     println(io, "VAR Estimation Results:")
     println(io, "=======================")
-    println(io, "Endogenous variables:")
+    print(io, "Endogenous variables: ")
+    for k = 1:K
+        print(io, "$(v.varnames[k]) ")
+    end
+    print(io, "\n")
     println(io, "Deterministic variables:")
-    println(io, "Sample size:")
+    println(io, "Sample size: $(v.obs)")
     for k = 1:K
         println(io)
-        println(io, "Estimates for equation $k:")
+        println(io, "Estimates for equation $(v.varnames[k]):")
         show(io, ct[k])
         println(io)
     end

@@ -6,6 +6,9 @@ using VectorAutoregressions
 using Dates
 
 cd(@__DIR__)
+if "kilian_data.csv" ∉ readdir()
+    include("process_kilian_data.jl")
+end
 datadf = CSV.read("kilian_data.csv")
 
 # Lag Selection Criteria
