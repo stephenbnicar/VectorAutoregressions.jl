@@ -60,11 +60,14 @@ function show(io::IO, v::VarEstimate)
     println(io, "VAR Estimation Results")
     println(io, "======================")
     print(io, "Endogenous variables: ")
-    for k = 1:K
-        print(io, "$(v.varnames[k]) ")
+    for k = 1:K-1
+        print(io, "$(v.varnames[k]), ")
     end
-    print(io, "\n")
-    println(io, "Deterministic variables:")
+    println(io, "$(v.varnames[K])")
+    print(io, "Deterministic variables: ")
+    v.constant && v.trend ? println(io, "constant, trend") : (
+        v.constant ? println(io, "constant") : println(io)
+    )
     println(io, "Sample size: $(v.obs)")
     for k = 1:K
         println(io)
