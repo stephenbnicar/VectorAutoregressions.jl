@@ -20,8 +20,8 @@ Arguments:
 ---
 * `data` : `DataFrame` or `TimeArray` of observations on endogenous variables
 * `lags` : the number of lags
-* `constant` : boolean to indicate inclusion of intercept term (default is `true`)
-* `trend` : boolean to indicate inclusion of a linear trend
+* `constant` : `Bool` to indicate inclusion of intercept term
+* `trend` : `Bool` to indicate inclusion of a linear trend
 ---
 """
 function VAR(data::DataFrame, lags; constant::Bool = true, trend::Bool = false)
@@ -68,6 +68,7 @@ function show(io::IO, v::VarEstimate)
     v.constant && v.trend ? println(io, "constant, trend") : (
         v.constant ? println(io, "constant") : println(io)
     )
+    println(io, "Lags: $(v.lags)")
     println(io, "Sample size: $(v.obs)")
     for k = 1:K
         println(io)

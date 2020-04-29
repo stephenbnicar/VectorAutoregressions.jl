@@ -1,7 +1,7 @@
 cd(joinpath(@__DIR__, "../"))
 using Pkg
 pkg"activate ."
-using CSV, DataFrames, TimeSeries
+using CSV, DataFrames
 using VectorAutoregressions
 using Dates
 
@@ -16,3 +16,7 @@ ls = lagselect(datadf, 8)
 
 # Estimate VAR
 v  = VAR(datadf, ls.selection[:AIC])
+# v  = VAR(datadf, 4)
+
+# Check Stability
+vstable = checkstable(v)

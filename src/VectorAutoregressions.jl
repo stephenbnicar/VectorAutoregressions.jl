@@ -8,14 +8,13 @@ using StatsBase: CoefTable
 import Base: show
 import StatsBase: loglikelihood, aic, sample, coef, stderror, residuals, coeftable
 
-abstract type AbstractVarModel end
-
 export  VarEstimate, VAR, IRF,
         LagSelectionCriteria,
+        StabilityCheck,
         loglikelihood,
         aic, sic, hqc,
         coef, stderror, residuals, coeftable,
-        lagselect
+        lagselect, checkstable
 
 include("matrix_utilities.jl")
 include("VAR.jl")
