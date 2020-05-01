@@ -40,7 +40,7 @@ function show(io::IO, rct::ResidualCorrelationTest)
     println(io, "--------------------------------")
     println(io, "Q statistic:", lpad(string(round(rct.Q; digits=3)), 12))
     println(io, "P-value:    ", lpad(string(round(rct.pvalQ; digits=3)), 12))
-    outcome = if rct.pvalQ > 0.05 "Fail to reject" else "Reject" end
+    outcome = rct.pvalQ > 0.05 ? "Fail to reject" : "Reject"
     println(io, "$outcome the null at the 5% level")
     println(io, "--------------------------------")
 end

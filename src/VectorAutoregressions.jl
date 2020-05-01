@@ -3,10 +3,11 @@ module VectorAutoregressions
 using DataFrames, TimeSeries
 using Distributions: ccdf, TDist
 using Dates, LinearAlgebra
-using StatsBase: CoefTable
+using StatsBase: CoefTable, autocov, autocor, crosscov, crosscor
 
 import Base: show
-import StatsBase: loglikelihood, aic, sample, coef, stderror, residuals, coeftable
+import StatsBase: loglikelihood, aic, sample, coef, stderror, residuals,
+       coeftable
 
 export  VarEstimate, VAR, IRF,
         LagSelectionCriteria,
