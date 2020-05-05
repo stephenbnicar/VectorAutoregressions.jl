@@ -34,10 +34,10 @@ end
 
 function show(io::IO, rct::ResidualCorrelationTest)
     println(io, "VAR Residual Correlation Test")
-    println(io, "--------------------------------")
+    println(io, "-----------------------------")
     println(io, "Multivariate portmanteau test")
     println(io, "(Null is no autocorrelation)")
-    println(io, "--------------------------------")
+    println(io, "-----------------------------")
     println(io, "Q statistic:", lpad(string(round(rct.Q; digits=3)), 12))
     println(io, "P-value:    ", lpad(string(round(rct.pvalQ; digits=3)), 12))
     outcome = rct.pvalQ > 0.05 ? "Fail to reject" : "Reject"
