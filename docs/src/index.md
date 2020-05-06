@@ -8,7 +8,7 @@ using CSV
 using DataFrames
 using DataFramesMeta
 ```
-The full dataset consists of West German fixed investment, disposable income, and consumption expenditures, quarterly and seasonally adjusted, for 1960 - 1982. For this example, only observations through 1978 Q4 are used. The data are in natural logs and are first-differenced to ensure stationarity.
+The full dataset consists of West German fixed investment, disposable income, and consumption expenditures, quarterly and seasonally adjusted, for 1960 - 1982. For this example, only observations through 1978 Q4 are used. The data are in natural logs and are first-differenced.
 
 ```julia
 datadf = CSV.read("lutkepohl_data.csv")
