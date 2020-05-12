@@ -11,5 +11,6 @@ makedocs(
 )
 
 deploydocs(
-    repo="github.com/stephenbnicar/VectorAutoregressions.jl"
+    repo="github.com/stephenbnicar/VectorAutoregressions.jl",
+    # deploy_config = Documenter.GitHubActions()
 )
