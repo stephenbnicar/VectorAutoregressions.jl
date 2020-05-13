@@ -14,4 +14,4 @@
 [repo-url]: https://www.repostatus.org/#wip
 
 *VectorAutoregressions.jl* is a package for estimating VARs using Julia.  The initial
-goal is to provide functionality comparable to the [`vars`](https://cran.r-project.org/package=vars) package in R.
+goal is to provide functionality comparable to the The initial goal is to provide functionality comparable to the <a href="https://cran.r-project.org/package=vars" target="_blank">`vars`</a> package in R.
