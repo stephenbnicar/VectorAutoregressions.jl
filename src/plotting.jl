@@ -12,10 +12,10 @@
         ymax = maximum(point)
         ymin = minimum(point)
     end
-    cush = max(abs(0.1*ymin), abs(0.1*ymax))
+    cush = max(abs(0.1 * ymin), abs(0.1 * ymax))
 
-    ylims  := (ymin-cush, ymax+cush)
-    xlims  := (0, h-0.75)
+    ylims := (ymin - cush, ymax + cush)
+    xlims := (0, h - 0.75)
     xticks := 0:1:h-1
     legend := false
     linewidth --> 2

@@ -6,16 +6,23 @@ using Dates, LinearAlgebra
 using StatsBase: CoefTable, autocov, autocor, crosscov, crosscor
 
 import Base: show
-import StatsBase: loglikelihood, aic, sample, coef, stderror, residuals,
-       coeftable
+import StatsBase: loglikelihood, aic, sample, coef, stderror, residuals, coeftable
 
-export  VarEstimate, VAR, IRF,
-        LagSelectionCriteria,
-        StabilityCheck,
-        loglikelihood,
-        aic, sic, hqc,
-        coef, stderror, residuals, coeftable,
-        lagselect, checkstable
+export VarEstimate,
+    VAR,
+    IRF,
+    LagSelectionCriteria,
+    StabilityCheck,
+    loglikelihood,
+    aic,
+    sic,
+    hqc,
+    coef,
+    stderror,
+    residuals,
+    coeftable,
+    lagselect,
+    checkstable
 
 include("matrix_utilities.jl")
 include("VAR.jl")

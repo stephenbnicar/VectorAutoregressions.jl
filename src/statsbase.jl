@@ -61,12 +61,7 @@ function coeftable(v::VarEstimate)
     obs = v.obs
     dofr = obs - m
 
-    colnms = [
-        "Estimate",
-        "Std. Error",
-        "t value",
-        "Pr > |t|",
-    ]
+    colnms = ["Estimate", "Std. Error", "t value", "Pr > |t|"]
 
     rownms = Vector{String}()
     for l = 1:lags
@@ -79,8 +74,8 @@ function coeftable(v::VarEstimate)
 
     ctable = Array{CoefTable}(undef, K)
     for k = 1:K
-        Bk   = round.(B[:, k], sigdigits=4)
-        seBk = round.(seB[:, k], sigdigits=4)
+        Bk = round.(B[:, k], sigdigits = 4)
+        seBk = round.(seB[:, k], sigdigits = 4)
         tk = Bk ./ seBk
         pk = 2 * ccdf.(TDist(dofr), abs.(tk))
         # mat = hcat(Bk, seBk, tk)

@@ -26,12 +26,7 @@ Arguments:
 * `constant` : boolean to indicate inclusion of intercept term (default is `true`)
 * `trend` : boolean to indicate inclusion of a linear trend
 """
-function lagselect(
-    data::DataFrame,
-    maxlag::Int;
-    constant::Bool = true,
-    trend::Bool = false,
-)
+function lagselect(data::DataFrame, maxlag::Int; constant::Bool = true, trend::Bool = false)
     if maxlag < 1
         error("maxlag must be ≥ 1")
     end
@@ -50,12 +45,7 @@ function lagselect(
     LagSelectionCriteria(maxlag, table, selection)
 end
 
-function lagselect(
-    data::TimeArray,
-    maxlag::Int;
-    constant::Bool = true,
-    trend::Bool = false,
-)
+function lagselect(data::TimeArray, maxlag::Int; constant::Bool = true, trend::Bool = false)
     data = DataFrame(data)[:, 2:end]
     lagselect(data, maxlag; constant = constant, trend = trend)
 end

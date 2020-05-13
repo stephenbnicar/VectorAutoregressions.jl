@@ -37,7 +37,7 @@ function checkstable(v::VarEstimate)
     p = v.lags
     B = coef(v)
     nparam, K = size(B)
-    startidx = nparam - K*p + 1
+    startidx = nparam - K * p + 1
     A = B[startidx:end, :]
     Acomp = comp_matrix(A, p)
     eigenvals = eigvals(Acomp)
@@ -66,8 +66,12 @@ function show(io::IO, stab::StabilityCheck)
     println(io, "--------------------------")
     println(io, " Eigenvalues      Modulus")
     println(io, "--------------------------")
-    for i in 1:length(E)
-        println(io, lpad(string(round(E[i]; digits=3)), 16), lpad(string(round(Emod[i]; digits=3)), 9))
+    for i = 1:length(E)
+        println(
+            io,
+            lpad(string(round(E[i]; digits = 3)), 16),
+            lpad(string(round(Emod[i]; digits = 3)), 9),
+        )
     end
     println(io, "--------------------------")
 end

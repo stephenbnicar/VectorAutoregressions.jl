@@ -65,9 +65,8 @@ function show(io::IO, v::VarEstimate)
     end
     println(io, "$(v.varnames[K])")
     print(io, "Deterministic variables: ")
-    v.constant && v.trend ? println(io, "constant, trend") : (
-        v.constant ? println(io, "constant") : println(io)
-    )
+    v.constant && v.trend ? println(io, "constant, trend") :
+    (v.constant ? println(io, "constant") : println(io))
     println(io, "Lags: $(v.lags)")
     println(io, "Sample size: $(v.obs)")
     for k = 1:K
