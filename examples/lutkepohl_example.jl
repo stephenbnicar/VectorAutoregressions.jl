@@ -21,5 +21,5 @@ Y = @linq datadf |>
         consumption = diff(log.(:cons)))
 
 ls = lagselect(Y, 8)
-v  = VAR(Y, ls.selection[:AIC])
+v  = VAR(Y, ls.selection["AIC"])
 sc = checkstable(v)

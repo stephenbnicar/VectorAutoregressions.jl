@@ -15,7 +15,7 @@ datadf = CSV.read("kilian_data.csv")
 ls = lagselect(datadf, 8)
 
 # Estimate VAR
-v  = VAR(datadf, ls.selection[:AIC])
+v  = VAR(datadf, ls.selection["AIC"])
 # v  = VAR(datadf, 4)
 
 # Check Stability
