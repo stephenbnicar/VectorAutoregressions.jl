@@ -10,7 +10,6 @@ import StatsBase: loglikelihood, aic, sample, coef, stderror, residuals, coeftab
 
 export VarEstimate,
     VAR,
-    IRF,
     LagSelectionCriteria,
     StabilityCheck,
     loglikelihood,
@@ -27,7 +26,6 @@ export VarEstimate,
 include("matrix_utilities.jl")
 include("VAR.jl")
 include("statsbase.jl")
-include("IRF.jl")
 include("diagnostics.jl")
 include("lag_selection.jl")
 

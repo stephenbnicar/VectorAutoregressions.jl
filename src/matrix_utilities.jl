@@ -15,11 +15,12 @@ function lag_matrix(x::T, lag::Int) where {T<:AbstractVector}
 end
 
 """
-    comp_matrix(A, p)
+    companion(A, p)
 
-Construct the companion matrix for `A`.
+Construct the companion matrix for VAR coefficient matrix `A`, where `A` has
+    dimensions (Kp × K).
 """
-function comp_matrix(A, p)
+function companion(A, p)
     K = size(A, 2)
     subI = [Matrix(1.0I, K * (p - 1), K * (p - 1)) zeros(K * (p - 1), K)]
     Acomp = vcat(A', subI)

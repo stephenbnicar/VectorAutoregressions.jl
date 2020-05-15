@@ -7,7 +7,7 @@ using Dates
 
 cd(@__DIR__)
 if "kilian_data.csv" ∉ readdir()
-    include("process_kilian_data.jl")
+    include("./source_data/process_kilian_data.jl")
 end
 datadf = CSV.read("kilian_data.csv")
 
@@ -16,7 +16,6 @@ ls = lagselect(datadf, 8)
 
 # Estimate VAR
 v  = VAR(datadf, ls.selection["AIC"])
-# v  = VAR(datadf, 4)
 
 # Check Stability
 vstable = checkstable(v)
