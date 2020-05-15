@@ -6,7 +6,8 @@ on:
     branches:
       - master
     paths:
-      - 'src/'
+      - '.github/workflows/Documentation.yml'
+      - 'src/**'
       - 'docs/**'
     tags: '*'
 
