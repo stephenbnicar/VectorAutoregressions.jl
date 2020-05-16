@@ -24,6 +24,13 @@ Return the matrix of residuals for VAR model `v`.
 residuals(v::VarEstimate) = v.U
 
 """
+    fitted(v::VarEstimate)
+    
+Return the fitted values for VAR model `v`.
+"""
+fitted(v::VarEstimate) = nothing
+
+"""
     loglikelihood(v::VarEstimate)
 
 Return the log-likelihood for VAR model `v`.

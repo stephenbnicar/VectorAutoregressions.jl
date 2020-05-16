@@ -57,9 +57,6 @@ function show(io::IO, stab::StabilityCheck)
         print(io, "$(stab.varnames[k]), ")
     end
     println(io, "$(stab.varnames[K])")
-    print(io, "Deterministic variables: ")
-    v.constant && v.trend ? println(io, "constant, trend") :
-    (v.constant ? println(io, "constant") : println(io))
     println(io, "Lags: $(stab.lags)")
     if stab.isstable
         println(io, "VAR is stable")

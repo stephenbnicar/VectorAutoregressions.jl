@@ -78,49 +78,19 @@ function show(io::IO, v::VarEstimate)
 end
 
 
-
-
-# varresult
-# list of ‘lm’ objects.
-#
-# datamat
-# The data matrix of the endogenous and explanatory variables.
-#
-# y
-# The data matrix of the endogenous variables
-#
-# type
-# A character, specifying the deterministic regressors.
-#
-# p
-# An integer specifying the lag order.
-#
-# K
-# An integer specifying the dimension of the VAR.
-#
-# obs
-# An integer specifying the number of used observations.
-#
-# totobs
-# An integer specifying the total number of observations.
-#
-# restrictions
-# Either NULL or a matrix object containing the zero restrictions of the VAR(p).
-#
-# call
-# The call to VAR().
-
-# VAR Estimation Results:
-# =========================
-# Endogenous variables: e, prod, rw, U
-# Deterministic variables: const
-# Sample size: 82
-# Log Likelihood: -175.819
-# Roots of the characteristic polynomial:
-# 0.995 0.9081 0.9081 0.7381 0.7381 0.1856 0.1429 0.1429
-# Call:
-# VAR(y = Canada, p = 2, type = "const")
-#
-#
-# Estimation results for equation e:
-# ==================================
+## New VarEstimate:
+# Y original data matrix of endog variables
+# X original data matrix of exog variables
+# Z rhs matrix
+# varnames y
+# varnames x
+# lags::Int
+# constant::Bool
+# trend::Bool
+# obs::Int
+# B::Matrix
+# seB::Matrix
+# U::Matrix
+# ΣU::Matrix
+# predicted values
+# A matrix? (coeffs without const, trend)
