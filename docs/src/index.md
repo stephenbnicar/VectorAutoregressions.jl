@@ -7,6 +7,7 @@
 
 ```@docs
 VAR
+VarEstimate
 ```
 
 ## Diagnostics
@@ -25,4 +26,5 @@ hqc
 coef
 stderror
 residuals
+fitted
 ```
