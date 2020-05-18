@@ -25,7 +25,7 @@ function hqc(v::VarEstimate)
 end
 
 struct StabilityCheck
-    varnames::Array{String}
+    ynames::Array{String}
     lags::Int
     isstable::Bool
     eigenvals::Array{Number}
@@ -43,20 +43,20 @@ function checkstable(v::VarEstimate)
     eigenvals = eigvals(Acomp)
     eigenmod = abs.(eigenvals)
     isstable = all(eigenmod .< 1)
-    StabilityCheck(v.varnames, v.lags, isstable, eigenvals, eigenmod)
+    StabilityCheck(v.ynames, v.lags, isstable, eigenvals, eigenmod)
 end
 
 function show(io::IO, stab::StabilityCheck)
-    K = length(stab.varnames)
+    K = length(stab.ynames)
     E = stab.eigenvals
     Emod = stab.eigenmod
     println(io, "VAR Stability Check")
     println(io, "==========================")
     print(io, "Endogenous variables: ")
     for k = 1:K-1
-        print(io, "$(stab.varnames[k]), ")
+        print(io, "$(stab.ynames[k]), ")
     end
-    println(io, "$(stab.varnames[K])")
+    println(io, "$(stab.ynames[K])")
     println(io, "Lags: $(stab.lags)")
     if stab.isstable
         println(io, "VAR is stable")

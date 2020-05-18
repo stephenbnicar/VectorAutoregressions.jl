@@ -25,10 +25,10 @@ residuals(v::VarEstimate) = v.U
 
 """
     fitted(v::VarEstimate)
-    
+
 Return the fitted values for VAR model `v`.
 """
-fitted(v::VarEstimate) = nothing
+fitted(v::VarEstimate) = v.Yhat
 
 """
     loglikelihood(v::VarEstimate)
@@ -64,7 +64,7 @@ function coeftable(v::VarEstimate)
     seB = stderror(v)
     m, K = size(B)
     lags = v.lags
-    varnames = v.varnames
+    ynames = v.ynames
     obs = v.obs
     dofr = obs - m
 
@@ -73,7 +73,7 @@ function coeftable(v::VarEstimate)
     rownms = Vector{String}()
     for l = 1:lags
         for k = 1:K
-            push!(rownms, "$(varnames[k]).l$l")
+            push!(rownms, "$(ynames[k]).l$l")
         end
     end
     rownms = v.trend ? ["trend"; rownms] : rownms
