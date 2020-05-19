@@ -4,8 +4,10 @@
 `struct` holding the output from a call to [`VAR`](@ref).
 """
 struct VarEstimate
-    "`DataFrame` or `TimeArray` of observations on endogenous variables"
+    """`DataFrame` or `TimeArray` of observations on endogenous variables"""
     Y::Union{DataFrame,TimeArray}
+    """`DataFrame` or `TimeArray` of observations on exogenous variables (not yet
+            implemented)"""
     X::Union{DataFrame,TimeArray,Nothing}
     ynames::Array{String}
     xnames::Array{String}
@@ -31,7 +33,6 @@ Estimate an unrestricted vector autoregression (VAR) using OLS.
 - `lags::Int` : the number of lags
 - `constant::Bool = true` : include an intercept term
 - `trend::Bool = false` : include a linear trend
----
 """
 function VAR(data::DataFrame, lags; constant::Bool = true, trend::Bool = false)
     if lags > size(data, 1)

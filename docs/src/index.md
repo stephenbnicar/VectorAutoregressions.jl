@@ -14,6 +14,7 @@ VarEstimate
 
 ```@docs
 lagselect
+LagSelectionCriteria
 loglikelihood
 aic
 sic

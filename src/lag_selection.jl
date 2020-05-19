@@ -1,11 +1,12 @@
 """
     LagSelectionCriteria
 
-Fields:
----
-* `maxlag` : `Int`
-* `table` : `DataFrame`
-* `selction` : `Dict`
+
+
+# Fields
+- `maxlag::Int`
+- `table::DataFrame`
+- `selection::Dict`
 """
 struct LagSelectionCriteria
     maxlag::Int
@@ -14,17 +15,15 @@ struct LagSelectionCriteria
 end
 
 """
-    lagselect(data, lags, constant::Bool = true,
-        trend::Bool = false) -> LagSelectionCriteria
+    lagselect(data, lags; constant = true, trend = false) -> LagSelectionCriteria
 
 Calculate AIC, SIC, and HQC lag selection criteria for an unrestricted VAR.
 
-Arguments:
----
-* `data` : `DataFrame` or `TimeArray` of observations on endogenous variables
-* `lags` : maximum number of lags
-* `constant` : boolean to indicate inclusion of intercept term (default is `true`)
-* `trend` : boolean to indicate inclusion of a linear trend
+# Arguments
+- `data` : `DataFrame` or `TimeArray` of observations on endogenous variables
+- `lags::Int` : the number of lags
+- `constant::Bool = true` : include an intercept term
+- `trend::Bool = false` : include a linear trend
 """
 function lagselect(data::DataFrame, maxlag::Int; constant::Bool = true, trend::Bool = false)
     if maxlag < 1
