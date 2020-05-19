@@ -1,13 +1,24 @@
 """
     VarEstimate
 
-`struct` holding the output from a call to [`VAR`](@ref).
+# Fields
+- `Y::Union{DataFrame,TimeArray}`
+- `X::Union{DataFrame,TimeArray,Nothing}`
+- `ynames::Array{String}`
+- `xnames::Array{String}`
+- `lags::Int`
+- `constant::Bool`
+- `trend::Bool`
+- `obs::Int`
+- `Z::Matrix`
+- `B::Matrix`
+- `seB::Matrix`
+- `U::Matrix`
+- `ΣU::Matrix`
+- `Yhat::Matrix`
 """
 struct VarEstimate
-    """`DataFrame` or `TimeArray` of observations on endogenous variables"""
     Y::Union{DataFrame,TimeArray}
-    """`DataFrame` or `TimeArray` of observations on exogenous variables (not yet
-            implemented)"""
     X::Union{DataFrame,TimeArray,Nothing}
     ynames::Array{String}
     xnames::Array{String}

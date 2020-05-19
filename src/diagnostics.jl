@@ -24,6 +24,16 @@ function hqc(v::VarEstimate)
     return logdet(ΣUml) + (2 * log(log(obs)) / obs) * nparam * K
 end
 
+"""
+    StabilityCheck
+
+# Fields
+- `ynames::Array{String}`
+- `lags::Int`
+- `isstable::Bool`
+- `eigenvals::Array{Number}`
+- `eigenmod::Array{Float64}`
+"""
 struct StabilityCheck
     ynames::Array{String}
     lags::Int
@@ -32,6 +42,11 @@ struct StabilityCheck
     eigenmod::Array{Float64}
 end
 
+"""
+    checkstable(v::VarEstimate) -> StabilityCheck
+
+Check the stability of the estimated VAR model `v`.
+"""
 function checkstable(v::VarEstimate)
     # See Lutkepohl (2006) p.15ff
     p = v.lags
@@ -76,8 +91,14 @@ function show(io::IO, stab::StabilityCheck)
     println(io, "--------------------------")
 end
 
+"""
+    portmanteau_test(v::VarEstimate, h::Int)
 
-function portmanteau_test(v::VarEstimate, h)
+Conduct a multivariate portmanteau test for residual autocorrelation up to lag
+    `h` for VAR model `v`.
+Implements the adjusted test described on p.171 of Lutkepohl (2006).
+"""
+function portmanteau_test(v::VarEstimate, h::Int)
     U = residuals(v)
     T, K = size(U)
     p = v.lags

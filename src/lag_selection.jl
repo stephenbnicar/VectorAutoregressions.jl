@@ -1,8 +1,6 @@
 """
     LagSelectionCriteria
 
-
-
 # Fields
 - `maxlag::Int`
 - `table::DataFrame`
@@ -15,13 +13,13 @@ struct LagSelectionCriteria
 end
 
 """
-    lagselect(data, lags; constant = true, trend = false) -> LagSelectionCriteria
+    lagselect(data, maxlag; constant = true, trend = false) -> LagSelectionCriteria
 
 Calculate AIC, SIC, and HQC lag selection criteria for an unrestricted VAR.
 
 # Arguments
 - `data` : `DataFrame` or `TimeArray` of observations on endogenous variables
-- `lags::Int` : the number of lags
+- `maxlag::Int` : the maximum number of lags to estimate
 - `constant::Bool = true` : include an intercept term
 - `trend::Bool = false` : include a linear trend
 """

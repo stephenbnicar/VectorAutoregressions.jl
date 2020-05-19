@@ -12,7 +12,10 @@ import StatsBase: loglikelihood, aic, sample, coef, stderror, residuals,
 export VarEstimate,
     VAR,
     LagSelectionCriteria,
+    lagselect,
     StabilityCheck,
+    checkstable,
+    portmanteau_test,
     loglikelihood,
     aic,
     sic,
@@ -21,9 +24,7 @@ export VarEstimate,
     stderror,
     residuals,
     coeftable,
-    fitted,
-    lagselect,
-    checkstable
+    fitted
 
 include("matrix_utilities.jl")
 include("VAR.jl")
