@@ -14,9 +14,9 @@ VarEstimate
 
 ```@docs
 lagselect
-LagSelectionCriteria
+VarLagSelection
 checkstable
-StabilityCheck
+VarStabilityCheck
 portmanteau_test
 loglikelihood
 aic
