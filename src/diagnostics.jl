@@ -25,25 +25,21 @@ function hqc(v::VarEstimate)
 end
 
 """
-    StabilityCheck
+    VarStabilityCheck
 
 # Fields
-- `ynames::Array{String}`
-- `lags::Int`
 - `isstable::Bool`
 - `eigenvals::Array{Number}`
 - `eigenmod::Array{Float64}`
 """
-struct StabilityCheck
-    ynames::Array{String}
-    lags::Int
+struct VarStabilityCheck
     isstable::Bool
     eigenvals::Array{Number}
     eigenmod::Array{Float64}
 end
 
 """
-    checkstable(v::VarEstimate) -> StabilityCheck
+    checkstable(v::VarEstimate) -> VarStabilityCheck
 
 Check the stability of the estimated VAR model `v`.
 """
@@ -58,37 +54,21 @@ function checkstable(v::VarEstimate)
     eigenvals = eigvals(Acomp)
     eigenmod = abs.(eigenvals)
     isstable = all(eigenmod .< 1)
-    StabilityCheck(v.ynames, v.lags, isstable, eigenvals, eigenmod)
+    VarStabilityCheck(isstable, eigenvals, eigenmod)
 end
 
-function show(io::IO, stab::StabilityCheck)
-    K = length(stab.ynames)
-    E = stab.eigenvals
-    Emod = stab.eigenmod
-    println(io, "VAR Stability Check")
-    println(io, "==========================")
-    print(io, "Endogenous variables: ")
-    for k = 1:K-1
-        print(io, "$(stab.ynames[k]), ")
-    end
-    println(io, "$(stab.ynames[K])")
-    println(io, "Lags: $(stab.lags)")
-    if stab.isstable
+function show(io::IO, obj::VarStabilityCheck)
+    # K = length(stab.ynames)
+    E = obj.eigenvals
+    Emod = round.(unique(obj.eigenmod), digits = 3)
+    println(io, typeof(obj))
+    if obj.isstable
         println(io, "VAR is stable")
     else
         println(io, "VAR is not stable")
     end
-    println(io, "--------------------------")
-    println(io, " Eigenvalues      Modulus")
-    println(io, "--------------------------")
-    for i = 1:length(E)
-        println(
-            io,
-            lpad(string(round(E[i]; digits = 3)), 16),
-            lpad(string(round(Emod[i]; digits = 3)), 9),
-        )
-    end
-    println(io, "--------------------------")
+    println(io, "Modulus of eigenvalues (dropping repeated values):")
+    println(io, sort(Emod))
 end
 
 """

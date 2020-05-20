@@ -80,8 +80,8 @@ end
 function show(io::IO, v::VarEstimate)
     ct = coeftable(v)
     K = length(ct)
-    println(io, "VAR Estimation Results")
-    println(io, "======================")
+    println(io, typeof(v))
+    println(io)
     print(io, "Endogenous variables: ")
     for k = 1:K-1
         print(io, "$(v.ynames[k]), ")

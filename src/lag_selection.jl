@@ -1,19 +1,19 @@
 """
-    LagSelectionCriteria
+    VarLagSelection
 
 # Fields
 - `maxlag::Int`
 - `table::DataFrame`
 - `selection::Dict`
 """
-struct LagSelectionCriteria
+struct VarLagSelection
     maxlag::Int
     table::DataFrame
     selection::Dict
 end
 
 """
-    lagselect(data, maxlag; constant = true, trend = false) -> LagSelectionCriteria
+    lagselect(data, maxlag; constant = true, trend = false) -> VarLagSelection
 
 Calculate AIC, SIC, and HQC lag selection criteria for an unrestricted VAR.
 
@@ -39,7 +39,7 @@ function lagselect(data::DataFrame, maxlag::Int; constant::Bool = true, trend::B
     end
     table = DataFrame(lag = collect(1:maxlag), AIC = AIC, HQC = HQC, SIC = SIC)
     selection = Dict(cn => argmin(table[!, cn]) for cn in names(table)[2:end])
-    LagSelectionCriteria(maxlag, table, selection)
+    VarLagSelection(maxlag, table, selection)
 end
 
 function lagselect(data::TimeArray, maxlag::Int; constant::Bool = true, trend::Bool = false)
@@ -47,14 +47,11 @@ function lagselect(data::TimeArray, maxlag::Int; constant::Bool = true, trend::B
     lagselect(data, maxlag; constant = constant, trend = trend)
 end
 
-function show(io::IO, ls::LagSelectionCriteria)
-    println(io, "VAR Lag Selection")
-    println(io, "-------------------------")
-    println(io, "maxlag: ", ls.maxlag)
-    println(io, "Criterion   Lag Selection")
-    println(io, "-------------------------")
+function show(io::IO, ls::VarLagSelection)
+    println(io, typeof(ls))
+    println(io, "Maximum lags: ", ls.maxlag)
     for k in keys(ls.selection)
-        println(io, rpad(string(k), 16), ls.selection[k])
+        print(io, k, ": ", rpad(ls.selection[k], 3))
     end
-    println(io, "-------------------------")
+    print(io,'\n')
 end
