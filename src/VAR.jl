@@ -35,31 +35,40 @@ struct VarEstimate
 end
 
 """
-    VAR(data, lags; constant = true, trend = false) -> VarEstimate
+    VAR(endog, lags; constant = true, trend = false, exog = nothing) -> VarEstimate
 
 Estimate an unrestricted vector autoregression (VAR) using OLS.
 
 # Arguments
-- `data` : `DataFrame` or `TimeArray` of observations on endogenous variables
+- `endog` : `DataFrame` or `TimeArray` of observations on endogenous variables
 - `lags::Int` : the number of lags
 - `constant::Bool = true` : include an intercept term
 - `trend::Bool = false` : include a linear trend
+- `exog` : `DataFrame` or `TimeArray` of observations on exogenous variables
 """
-function VAR(data::DataFrame, lags; constant::Bool = true, trend::Bool = false)
-    if lags > size(data, 1)
+function VAR(endog::DataFrame, lags; constant::Bool = true, trend::Bool = false,
+    exog::Union{DataFrame,Nothing} = nothing)
+    if lags > size(endog, 1)
         error("Number of lags is greater than number of observations.")
     end
-    ynames = String.(names(data))
-    datamat = Matrix(data)
+    if !isa(exog, Nothing) && size(exog, 1) !== size(endog, 1)
+        error("Unequal number of observations for exogenous and endogenous variables.")
+    end
+    ynames = String.(names(endog))
+    xnames = !isa(exog, Nothing) ? String.(names(exog)) : [""]
+    datamat = Matrix(endog)
     obs = size(datamat, 1) - lags
     Z, B, U, seB, ΣU, Yhat = varols(datamat, lags, constant, trend)
-    VarEstimate(data, nothing, ynames, [""], lags, constant, trend,
+    VarEstimate(endog, exog, ynames, xnames, lags, constant, trend,
         obs, Z, B, seB, U, ΣU, Yhat)
 end
 
-function VAR(data::TimeArray, lags; constant::Bool = true, trend::Bool = false)
-    data = DataFrame(data)[:, 2:end]
-    VAR(data, lags; constant = constant, trend = trend)
+function VAR(endog::TimeArray, lags; constant::Bool = true, trend::Bool = false, exog = nothing)
+    endog = DataFrame(endog)[:, 2:end]
+    if !isa(exog, Nothing)
+        exog = DataFrame(exog)[:, 2:end]
+    end
+    VAR(endog, lags; constant = constant, trend = trend, exog = exog)
 end
 
 function varols(y, ylag, constant, trend)
