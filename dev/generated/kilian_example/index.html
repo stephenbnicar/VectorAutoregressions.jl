@@ -1,69 +1,23 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Example · VectorAutoregressions.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">VectorAutoregressions.jl</span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li class="is-active"><a class="tocitem" href>Example</a><ul class="internal"><li><a class="tocitem" href="#Lag-Selection-Criteria-1"><span>Lag Selection Criteria</span></a></li><li><a class="tocitem" href="#Estimate-VAR-1"><span>Estimate VAR</span></a></li><li><a class="tocitem" href="#Check-Stability-1"><span>Check Stability</span></a></li></ul></li><li><a class="tocitem" href="../../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Example</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Example</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/stephenbnicar/VectorAutoregressions.jl/blob/master/examples/kilian_example.jl" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><pre><code class="language-julia"># Make sure to activate the VectorAutoregressions environment before running
-using CSV, DataFrames
-using VectorAutoregressions
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Example · VectorAutoregressions.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">VectorAutoregressions.jl</span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li class="is-active"><a class="tocitem" href>Example</a><ul class="internal"><li><a class="tocitem" href="#Lag-Selection-Criteria-1"><span>Lag Selection Criteria</span></a></li><li><a class="tocitem" href="#Estimate-VAR-1"><span>Estimate VAR</span></a></li><li><a class="tocitem" href="#Check-Stability-1"><span>Check Stability</span></a></li></ul></li><li><a class="tocitem" href="../../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Example</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Example</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/stephenbnicar/VectorAutoregressions.jl/blob/master/examples/kilian_example.jl" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><pre><code class="language-julia-repl">julia&gt; using CSV, DataFrames
 
-exdir = dirname(dirname(pathof(VectorAutoregressions)))*&quot;/examples&quot;
-datadf = CSV.read(exdir*&quot;/kilian_data.csv&quot;);
-first(datadf, 6)</code></pre><table class="data-frame"><thead><tr><th></th><th>drgdp</th><th>irate</th><th>infl</th></tr><tr><th></th><th>Float64</th><th>Float64</th><th>Float64</th></tr></thead><tbody><p>6 rows × 3 columns</p><tr><th>1</th><td>1.99449</td><td>0.986667</td><td>0.281037</td></tr><tr><th>2</th><td>2.81001</td><td>1.34333</td><td>0.481803</td></tr><tr><th>3</th><td>1.59281</td><td>1.5</td><td>0.414831</td></tr><tr><th>4</th><td>1.33458</td><td>1.94</td><td>0.708994</td></tr><tr><th>5</th><td>0.608906</td><td>2.35667</td><td>0.977862</td></tr><tr><th>6</th><td>-0.311153</td><td>2.48333</td><td>0.999882</td></tr></tbody></table><h2 id="Lag-Selection-Criteria-1"><a class="docs-heading-anchor" href="#Lag-Selection-Criteria-1">Lag Selection Criteria</a><a class="docs-heading-anchor-permalink" href="#Lag-Selection-Criteria-1" title="Permalink"></a></h2><pre><code class="language-julia">ls = lagselect(datadf, 8)</code></pre><pre><code class="language-none">VarLagSelection
-Maximum lags: 8
-HQC: 3  AIC: 6  SIC: 1  
-</code></pre><h2 id="Estimate-VAR-1"><a class="docs-heading-anchor" href="#Estimate-VAR-1">Estimate VAR</a><a class="docs-heading-anchor-permalink" href="#Estimate-VAR-1" title="Permalink"></a></h2><pre><code class="language-julia">v  = VAR(datadf, ls.selection[&quot;HQC&quot;])</code></pre><pre><code class="language-none">VarEstimate
+julia&gt; using VectorAutoregressions
 
-Endogenous variables: drgdp, irate, infl
-Deterministic variables: intercept
-Lags: 3
-Sample size: 210
+julia&gt; exdir = dirname(dirname(pathof(VectorAutoregressions)))*&quot;/examples&quot;;
 
-Estimates for equation drgdp:
-──────────────────────────────────────────────────
-           Estimate  Std. Error  t value  Pr &gt; |t|
-──────────────────────────────────────────────────
-intercept    0.6935      0.1675     4.14    &lt;1e-4
-drgdp.l1     0.2268      0.0682     3.33    0.0010
-irate.l1     0.0102      0.0652     0.16    0.8758
-infl.l1      0.3843      0.2021     1.90    0.0587
-drgdp.l2     0.2076      0.0701     2.96    0.0034
-irate.l2    -0.39        0.0938    -4.16    &lt;1e-4
-infl.l2      0.1306      0.2153     0.61    0.5448
-drgdp.l3    -0.0155      0.067     -0.23    0.8173
-irate.l3     0.3444      0.0649     5.31    &lt;1e-6
-infl.l3     -0.5301      0.2059    -2.57    0.0108
-──────────────────────────────────────────────────
+julia&gt; datadf = CSV.read(exdir*&quot;/kilian_data.csv&quot;);
 
-Estimates for equation irate:
-──────────────────────────────────────────────────
-           Estimate  Std. Error  t value  Pr &gt; |t|
-──────────────────────────────────────────────────
-intercept   -0.482       0.1787    -2.70    0.0076
-drgdp.l1     0.272       0.0728     3.74    0.0002
-irate.l1     1.0787      0.0696    15.50    &lt;1e-35
-infl.l1      0.5672      0.2156     2.63    0.0092
-drgdp.l2     0.1999      0.0748     2.67    0.0082
-irate.l2    -0.4438      0.1001    -4.43    &lt;1e-4
-infl.l2      0.4677      0.2297     2.04    0.0431
-drgdp.l3     0.0785      0.0715     1.10    0.2736
-irate.l3     0.2907      0.0692     4.20    &lt;1e-4
-infl.l3     -0.4954      0.2197    -2.25    0.0252
-──────────────────────────────────────────────────
-
-Estimates for equation infl:
-──────────────────────────────────────────────────
-           Estimate  Std. Error  t value  Pr &gt; |t|
-──────────────────────────────────────────────────
-intercept    0.0523      0.0589     0.89    0.3756
-drgdp.l1    -0.0122      0.024     -0.51    0.6118
-irate.l1     0.0537      0.0229     2.34    0.0200
-infl.l1      0.4578      0.071      6.45    &lt;1e-9
-drgdp.l2    -0.0023      0.0246    -0.09    0.9256
-irate.l2    -0.0352      0.033     -1.07    0.2874
-infl.l2      0.3036      0.0757     4.01    &lt;1e-4
-drgdp.l3     0.0336      0.0235     1.43    0.1543
-irate.l3    -0.0187      0.0228    -0.82    0.4131
-infl.l3      0.1608      0.0724     2.22    0.0275
-──────────────────────────────────────────────────
-</code></pre><h2 id="Check-Stability-1"><a class="docs-heading-anchor" href="#Check-Stability-1">Check Stability</a><a class="docs-heading-anchor-permalink" href="#Check-Stability-1" title="Permalink"></a></h2><pre><code class="language-julia">vstable = checkstable(v)</code></pre><pre><code class="language-none">VarStabilityCheck
-VAR is stable
-Modulus of eigenvalues (dropping repeated values):
-[0.419, 0.439, 0.482, 0.531, 0.942]
-</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../../api/">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Tuesday 26 May 2020 21:27">Tuesday 26 May 2020</span>. Using Julia version 1.4.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+julia&gt; first(datadf, 6)
+6×3 DataFrames.DataFrame
+│ Row │ drgdp     │ irate    │ infl     │
+│     │ Float64   │ Float64  │ Float64  │
+├─────┼───────────┼──────────┼──────────┤
+│ 1   │ 1.99449   │ 0.986667 │ 0.281037 │
+│ 2   │ 2.81001   │ 1.34333  │ 0.481803 │
+│ 3   │ 1.59281   │ 1.5      │ 0.414831 │
+│ 4   │ 1.33458   │ 1.94     │ 0.708994 │
+│ 5   │ 0.608906  │ 2.35667  │ 0.977862 │
+│ 6   │ -0.311153 │ 2.48333  │ 0.999882 │</code></pre><h2 id="Lag-Selection-Criteria-1"><a class="docs-heading-anchor" href="#Lag-Selection-Criteria-1">Lag Selection Criteria</a><a class="docs-heading-anchor-permalink" href="#Lag-Selection-Criteria-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; ls = lagselect(datadf, 8)
+ERROR: UndefVarError: lagselect not defined</code></pre><h2 id="Estimate-VAR-1"><a class="docs-heading-anchor" href="#Estimate-VAR-1">Estimate VAR</a><a class="docs-heading-anchor-permalink" href="#Estimate-VAR-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; v  = VAR(datadf, ls.selection[&quot;HQC&quot;])
+ERROR: UndefVarError: ls not defined</code></pre><h2 id="Check-Stability-1"><a class="docs-heading-anchor" href="#Check-Stability-1">Check Stability</a><a class="docs-heading-anchor-permalink" href="#Check-Stability-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; vstable = checkstable(v)
+ERROR: UndefVarError: checkstable not defined</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../../api/">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Tuesday 26 May 2020 22:24">Tuesday 26 May 2020</span>. Using Julia version 1.4.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
