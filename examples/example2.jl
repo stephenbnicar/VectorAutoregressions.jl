@@ -26,6 +26,6 @@ qdums_df = qdums_df[18:end, :]
 
 lags = 2
 constant = true
-trend    = true
+trend    = false
 
 v = VAR(Y, lags, trend = trend, exog = qdums_df)

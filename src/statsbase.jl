@@ -65,6 +65,7 @@ function coeftable(v::VarEstimate)
     m, K = size(B)
     lags = v.lags
     ynames = v.ynames
+    xnames = v.xnames
     obs = v.obs
     dofr = obs - m
 
@@ -76,13 +77,14 @@ function coeftable(v::VarEstimate)
             push!(rownms, "$(ynames[k]).l$l")
         end
     end
+    rownms = !isa(v.X, Nothing) ? [xnames; rownms] : rownms
     rownms = v.trend ? ["trend"; rownms] : rownms
-    rownms = v.constant ? ["Intercept"; rownms] : rownms
+    rownms = v.constant ? ["intercept"; rownms] : rownms
 
     ctable = Array{CoefTable}(undef, K)
     for k = 1:K
-        Bk = round.(B[:, k], sigdigits = 4)
-        seBk = round.(seB[:, k], sigdigits = 4)
+        Bk = round.(B[:, k], digits = 4)
+        seBk = round.(seB[:, k], digits = 4)
         tk = Bk ./ seBk
         pk = 2 * ccdf.(TDist(dofr), abs.(tk))
         # mat = hcat(Bk, seBk, tk)

@@ -57,8 +57,9 @@ function VAR(endog::DataFrame, lags; constant::Bool = true, trend::Bool = false,
     ynames = String.(names(endog))
     xnames = !isa(exog, Nothing) ? String.(names(exog)) : [""]
     datamat = Matrix(endog)
+    xmat = !isa(exog, Nothing) ? Matrix(exog) : nothing
     obs = size(datamat, 1) - lags
-    Z, B, U, seB, ΣU, Yhat = varols(datamat, lags, constant, trend)
+    Z, B, U, seB, ΣU, Yhat = varols(datamat, lags, constant, trend, xmat)
     VarEstimate(endog, exog, ynames, xnames, lags, constant, trend,
         obs, Z, B, seB, U, ΣU, Yhat)
 end
@@ -71,9 +72,9 @@ function VAR(endog::TimeArray, lags; constant::Bool = true, trend::Bool = false,
     VAR(endog, lags; constant = constant, trend = trend, exog = exog)
 end
 
-function varols(y, ylag, constant, trend)
+function varols(y, ylag, constant, trend, x)
     # Set up RHS Matrix
-    Z = rhs_matrix(y, ylag, constant, trend)
+    Z = rhs_matrix(y, ylag, constant, trend, x)
     # Set up LHS Matrix
     Y = y[ylag+1:end, :]
     # Coefficient estimates
@@ -97,8 +98,13 @@ function show(io::IO, v::VarEstimate)
     end
     println(io, "$(v.ynames[K])")
     print(io, "Deterministic variables: ")
-    v.constant && v.trend ? println(io, "constant, trend") :
-    (v.constant ? println(io, "constant") : println(io))
+    if !isa(v.X, Nothing)
+        for xn = 1:length(v.xnames)
+            print(io, "$(v.xnames[xn]), ")
+        end
+    end
+    v.constant && v.trend ? println(io, "intercept, trend") :
+    (v.constant ? println(io, "intercept") : println(io))
     println(io, "Lags: $(v.lags)")
     println(io, "Sample size: $(v.obs)")
     for k = 1:K

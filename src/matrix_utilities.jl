@@ -15,10 +15,11 @@ function lag_matrix(x::T, lag::Int) where {T<:AbstractVector}
 end
 
 """
-    companion(A, p)
+    companion(A, p) -> Matrix
 
 Construct the companion matrix for VAR coefficient matrix `A`, where `A` has
-    dimensions (Kp × K).
+    dimensions (Kp × K). K is the number of endogenous variables, p is the
+    number of lags.
 """
 function companion(A, p)
     K = size(A, 2)
@@ -27,14 +28,17 @@ function companion(A, p)
     return Acomp
 end
 
-function rhs_matrix(y, ylag, constant, trend)
-    rhsy = lag_matrix(y, ylag)
+function rhs_matrix(y, ylag, constant, trend, x)
+    rhs = lag_matrix(y, ylag)
+    if !isa(x, Nothing)
+        rhs = hcat(x[ylag+1:end, :], rhs)
+    end
     if trend
-        ltrend = collect(1.0:size(rhsy, 1))
-        rhsy = hcat(ltrend, rhsy)
+        ltrend = collect(1.0:size(rhs, 1))
+        rhs = hcat(ltrend, rhs)
     end
     if constant
-        rhsy = hcat(ones(Float64, size(rhsy, 1)), rhsy)
+        rhs = hcat(ones(Float64, size(rhs, 1)), rhs)
     end
-    return rhsy
+    return rhs
 end
