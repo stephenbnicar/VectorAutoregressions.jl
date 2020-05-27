@@ -1,21 +1,16 @@
-cd(joinpath(@__DIR__, "../"))
-using Pkg
-pkg"activate ."
+## Make sure to activate the VectorAutoregressions environment before running # hide
 using CSV, DataFrames
 using VectorAutoregressions
-using Dates
 
-cd(@__DIR__)
-if "kilian_data.csv" ∉ readdir()
-    include("./source_data/process_kilian_data.jl")
-end
-datadf = CSV.read("kilian_data.csv")
+exdir = dirname(dirname(pathof(VectorAutoregressions)))*"/examples";
+datadf = CSV.read(exdir*"/kilian_data.csv");
+first(datadf, 6)
 
-# Lag Selection Criteria
+# ## Get Lag Selection Criteria
 ls = lagselect(datadf, 8)
 
-# Estimate VAR
-v  = VAR(datadf, ls.selection["AIC"])
+# ## Estimate the VAR
+v  = VAR(datadf, ls.selection["HQC"])
 
-# Check Stability
+# ## Check Stability of the VAR
 vstable = checkstable(v)

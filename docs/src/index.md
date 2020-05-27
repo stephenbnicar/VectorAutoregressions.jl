@@ -2,33 +2,7 @@
 
 *VectorAutoregressions.jl* is a package for estimating Vector Autoregressions (VARs) using Julia.  The initial goal is to provide functionality comparable to the [`vars`](https://cran.r-project.org/package=vars) package in R.
 
-
-## Estimating a VAR
-
-```@docs
-VAR
-VarEstimate
-```
-
-## Diagnostics
-
-```@docs
-lagselect
-VarLagSelection
-checkstable
-VarStabilityCheck
-portmanteau_test
-loglikelihood
-aic
-sic
-hqc
-```
-
-## Other
-
-```@docs
-coef
-stderror
-residuals
-fitted
-```
+Currently implemented:
+- Calculate lag selection criteria.
+- Estimate an unrestricted VAR using OLS.
+- Check the stability of an estimated VAR.
