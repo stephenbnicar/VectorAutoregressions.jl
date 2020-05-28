@@ -12,6 +12,7 @@ Currently implemented:
 - [x] Calculate lag selection criteria.
 - [x] Estimate an unrestricted VAR using OLS.
 - [x] Check the stability of an estimated VAR.
+- [x] Portmanteau test for autocorellation in the residuals.
 
 To do:
 - [ ] Test for autocorellation in the residuals.

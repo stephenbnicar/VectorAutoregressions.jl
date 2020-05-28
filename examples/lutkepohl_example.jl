@@ -15,11 +15,11 @@ Y = @linq datadf |>
     select(investment = diff(log.(:invest)), income = diff(log.(:income)),
         consumption = diff(log.(:cons)))
 
-# ## Get Lag Selection Criteria
+# ## Get lag selection criteria
 ls = lagselect(Y, 8)
 # ## Estimate the VAR
 v  = VAR(Y, ls.selection["AIC"])
-# ## Check Stability of the VAR
+# ## Check stability of the VAR
 sc = checkstable(v)
 # ## Check for autocorrelation in the residuals
 pt = portmanteau_test(v, 12)
