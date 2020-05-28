@@ -2,9 +2,9 @@ using Documenter
 using VectorAutoregressions
 using Literate
 
-EXAMPLE = dirname(dirname(pathof(VectorAutoregressions)))*"/examples/kilian_example.jl"
+EXAMPLE = dirname(dirname(pathof(VectorAutoregressions)))*"/examples/lutkepohl_example.jl"
 OUTPUT = joinpath(@__DIR__, "src/generated")
-codefence = "```@repl kilian_example" => "```"
+codefence = "```@repl lutkepohl_example" => "```"
 Literate.markdown(EXAMPLE, OUTPUT, codefence = codefence, documenter=true)
 
 makedocs(
@@ -12,7 +12,7 @@ makedocs(
     format=Documenter.HTML(),
     pages=[
         "Home" => "index.md",
-        "Example" => "generated/kilian_example.md",
+        "Example" => "generated/lutkepohl_example.md",
         "API"  => "api.md"
     ],
     sitename="VectorAutoregressions.jl",

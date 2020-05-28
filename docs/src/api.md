@@ -13,6 +13,7 @@ VarLagSelection
 checkstable
 VarStabilityCheck
 portmanteau_test
+PortmanteauTest
 loglikelihood
 aic
 sic

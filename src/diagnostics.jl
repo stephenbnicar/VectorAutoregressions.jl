@@ -27,6 +27,8 @@ end
 """
     VarStabilityCheck
 
+`struct` to hold the results of [`checkstable`](@ref).
+
 # Fields
 - `isstable::Bool`
 - `eigenvals::Array{Number}`
@@ -72,7 +74,27 @@ function show(io::IO, obj::VarStabilityCheck)
 end
 
 """
-    portmanteau_test(v::VarEstimate, h::Int)
+    PortmanteauTest
+
+`struct` to hold the results of [`portmanteau_test`](@ref).
+
+# Fields
+- `U::Matrix`
+- `h::Int`
+- `Q::Float64`
+- `df::Int`
+- `pval::Float64`
+"""
+struct PortmanteauTest
+    U::Matrix
+    h::Int
+    Q::Float64
+    df::Int
+    pval::Float64
+end
+
+"""
+    portmanteau_test(v::VarEstimate, h::Int) -> PortmanteauTest
 
 Conduct a multivariate portmanteau test for residual autocorrelation up to lag
     `h` for VAR model `v`.
@@ -89,5 +111,16 @@ function portmanteau_test(v::VarEstimate, h::Int)
     end
     df = K^2 * (h - p)
     pval = ccdf(Chisq(df), Q)
-    return Q, df, pval
+    return PortmanteauTest(U, h, Q, df, pval)
+end
+
+function show(io::IO, obj::PortmanteauTest)
+    println(io, typeof(obj))
+    println(io, "Multivariate test for residual autocorrelation.")
+    println(io, "- Null is no autocorrelation")
+    println(io, "- Lags: $(obj.h)")
+    println(io, "- Q stat: $(round(obj.Q; digits=3))")
+    println(io, "- p-value: $(round(obj.pval; digits=3))")
+    outcome = obj.pval > 0.05 ? "Fail to reject" : "Reject"
+    println(io, "$outcome the null at the 5% level")
 end

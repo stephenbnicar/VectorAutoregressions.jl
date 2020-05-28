@@ -10,7 +10,7 @@ first(datadf, 6)
 ls = lagselect(datadf, 8)
 
 # ## Estimate the VAR
-v  = VAR(datadf, ls.selection["HQC"])
+v  = VAR(datadf, ls.selection["AIC"])
 
 # ## Check Stability of the VAR
 vstable = checkstable(v)
