@@ -1,7 +1,7 @@
-#==
-This file uses the example introduced in Section 3.2.3 of Lutkepohl (2006)
-Make sure to activate the VectorAutoregressions environment before running # hide
-==#
+# Make sure to activate the VectorAutoregressions environment before running # hide
+
+# This file uses the example introduced in Section 3.2.3 of Lutkepohl (2006)
+
 using VectorAutoregressions
 using CSV, DataFrames, DataFramesMeta
 using Dates
