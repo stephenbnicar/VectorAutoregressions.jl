@@ -1,24 +1,26 @@
 using LinearAlgebra
 using StatsBase
+using Distributions
 cd(@__DIR__)
 include("../examples/lutkepohl_example.jl")
 
+h = 4
+
 U = residuals(v)
-T = v.obs
-h = 2
+T, K = size(U)
+p = v.lags
+nparam = size(v.B, 1)
+Z = v.Z
+ΣUml = ((T - nparam) / T) * v.ΣU
 
-function makeF(T, h)
-    F = Matrix{Float64}(I, T, T)
-    for i in 1:h
-        Fi = [zeros(i, T); Matrix{Float64}(I, (T-i), (T-i)) zeros(T-i, i)]
-        F = hcat(F, Fi)
-    end
-    F[:, (T+1):end]
-end
+U2 = vcat(zeros(p+(h-p), K), U)
+Ulag = VectorAutoregressions.lag_matrix(U2, h)
+ZUlag = [Z Ulag]
+AD = (ZUlag' * ZUlag) \ (ZUlag' * U)
 
-F = makeF(T, h)
+E = U - ZUlag * AD
+ΣEml = (E' * E) / T
 
-# See (4.4.2) on p.158; that formula is missing 1/T # hide
-C = U' * F * kron(Matrix{Float64}(I, h, h), U) / T
-
-Calt = permutedims(crosscov(U, U, collect(0:h), demean = false), [3, 2, 1])
+Qlm = T * (K - tr(ΣUml \ ΣEml))
+df = h * K^2
+pval = ccdf(Chisq(df), Qlm)

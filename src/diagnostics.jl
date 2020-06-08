@@ -124,3 +124,44 @@ function show(io::IO, obj::PortmanteauTest)
     outcome = obj.pval > 0.05 ? "Fail to reject" : "Reject"
     println(io, "$outcome the null at the 5% level")
 end
+
+struct BreuschGodfreyTest
+    U::Matrix
+    h::Int
+    Q::Float64
+    df::Int
+    pval::Float64
+end
+
+function bg_test(v::VarEstimate, h::Int)
+    U = residuals(v)
+    T, K = size(U)
+    p = v.lags
+    nparam = size(v.B, 1)
+    Z = v.Z
+
+    U2 = vcat(zeros(p+(h-p), K), U)
+    Ulag = VectorAutoregressions.lag_matrix(U2, h)
+    ZUlag = [Z Ulag]
+    AD = (ZUlag' * ZUlag) \ (ZUlag' * U)
+    E = U - ZUlag * AD
+
+    ΣUml = ((T - nparam) / T) * v.ΣU
+    ΣEml = (E' * E) / T
+
+    Q = T * (K - tr(ΣUml \ ΣEml))
+    df = h * K^2
+    pval = ccdf(Chisq(df), Q)
+    return BreuschGodfreyTest(U, h, Q, df, pval)
+end
+
+function show(io::IO, obj::BreuschGodfreyTest)
+    println(io, typeof(obj))
+    println(io, "Multivariate test for residual autocorrelation.")
+    println(io, "- Null is no autocorrelation")
+    println(io, "- Lags: $(obj.h)")
+    println(io, "- Q stat: $(round(obj.Q; digits=3))")
+    println(io, "- p-value: $(round(obj.pval; digits=3))")
+    outcome = obj.pval > 0.05 ? "Fail to reject" : "Reject"
+    println(io, "$outcome the null at the 5% level")
+end
