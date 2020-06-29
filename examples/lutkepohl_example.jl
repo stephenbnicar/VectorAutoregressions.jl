@@ -1,5 +1,4 @@
 ## Make sure to activate the VectorAutoregressions environment before running # hide
-
 # This file uses the example introduced in Section 3.2.3 of Lutkepohl (2006)
 
 using VectorAutoregressions
@@ -23,4 +22,4 @@ v  = VAR(Y, ls.selection["AIC"])
 sc = checkstable(v)
 # ## Check for autocorrelation in the residuals
 pt = portmanteau_test(v, 12)
-bbgt = bg_test(v, 12)
+bgt = bg_test(v, 12)
