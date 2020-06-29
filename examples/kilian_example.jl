@@ -3,7 +3,7 @@ using CSV, DataFrames
 using VectorAutoregressions
 
 exdir = dirname(dirname(pathof(VectorAutoregressions)))*"/examples";
-datadf = CSV.read(exdir*"/kilian_data.csv");
+datadf = DataFrame!(CSV.File(exdir*"/kilian_data.csv"));
 first(datadf, 6)
 
 # ## Get Lag Selection Criteria

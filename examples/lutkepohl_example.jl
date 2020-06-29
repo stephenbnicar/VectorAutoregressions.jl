@@ -6,7 +6,7 @@ using CSV, DataFrames, DataFramesMeta
 using Dates
 
 exdir = dirname(dirname(pathof(VectorAutoregressions)))*"/examples";
-datadf = CSV.read(exdir*"/lutkepohl_data.csv")
+datadf = DataFrame!(CSV.File(exdir*"/lutkepohl_data.csv"))
 
 # Take the subset from 1960q1 to 1978q4, and use log-difference for each series
 Y = @linq datadf |>
