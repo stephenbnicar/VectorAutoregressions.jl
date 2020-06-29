@@ -8,7 +8,7 @@ julia&gt; using Dates
 julia&gt; exdir = dirname(dirname(pathof(VectorAutoregressions)))*&quot;/examples&quot;;
 
 julia&gt; datadf = CSV.read(exdir*&quot;/lutkepohl_data.csv&quot;)
-92×4 DataFrames.DataFrame
+92×4 DataFrame
 │ Row │ date       │ invest │ income │ cons  │
 │     │ Dates.Date │ Int64  │ Int64  │ Int64 │
 ├─────┼────────────┼────────┼────────┼───────┤
@@ -31,7 +31,7 @@ julia&gt; datadf = CSV.read(exdir*&quot;/lutkepohl_data.csv&quot;)
            where(:date .&lt; Date(1979,3,1)) |&gt;
            select(investment = diff(log.(:invest)), income = diff(log.(:income)),
                consumption = diff(log.(:cons)))
-75×3 DataFrames.DataFrame
+75×3 DataFrame
 │ Row │ investment  │ income     │ consumption │
 │     │ Float64     │ Float64    │ Float64     │
 ├─────┼─────────────┼────────────┼─────────────┤
@@ -111,11 +111,11 @@ Multivariate test for residual autocorrelation.
 - p-value: 0.716
 Fail to reject the null at the 5% level
 
-julia&gt; bbgt = bg_test(v, 12)
+julia&gt; bgt = bg_test(v, 12)
 BreuschGodfreyTest
 Multivariate test for residual autocorrelation.
 - Null is no autocorrelation
 - Lags: 12
 - Q stat: 110.054
 - p-value: 0.427
-Fail to reject the null at the 5% level</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../../api/">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 8 June 2020 21:33">Monday 8 June 2020</span>. Using Julia version 1.4.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+Fail to reject the null at the 5% level</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../../api/">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 29 June 2020 20:08">Monday 29 June 2020</span>. Using Julia version 1.4.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
