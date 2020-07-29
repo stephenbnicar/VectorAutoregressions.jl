@@ -5,9 +5,9 @@ julia&gt; using CSV, DataFrames, DataFramesMeta
 
 julia&gt; using Dates
 
-julia&gt; exdir = dirname(dirname(pathof(VectorAutoregressions)))*&quot;/examples&quot;;
+julia&gt; exdir = dirname(dirname(pathof(VectorAutoregressions))) * &quot;/examples&quot;;
 
-julia&gt; datadf = DataFrame!(CSV.File(exdir*&quot;/lutkepohl_data.csv&quot;))
+julia&gt; datadf = DataFrame!(CSV.File(exdir * &quot;/lutkepohl_data.csv&quot;))
 92×4 DataFrame
 │ Row │ date       │ invest │ income │ cons  │
 │     │ Dates.Date │ Int64  │ Int64  │ Int64 │
@@ -28,9 +28,12 @@ julia&gt; datadf = DataFrame!(CSV.File(exdir*&quot;/lutkepohl_data.csv&quot;))
 │ 90  │ 1982-06-01 │ 824    │ 2618   │ 2237  │
 │ 91  │ 1982-09-01 │ 831    │ 2628   │ 2250  │
 │ 92  │ 1982-12-01 │ 830    │ 2651   │ 2271  │</code></pre><p>Take the subset from 1960q1 to 1978q4, and use log-difference for each series</p><pre><code class="language-julia-repl">julia&gt; Y = @linq datadf |&gt;
-           where(:date .&lt; Date(1979,3,1)) |&gt;
-           select(investment = diff(log.(:invest)), income = diff(log.(:income)),
-               consumption = diff(log.(:cons)))
+             where(:date .&lt; Date(1979, 3, 1)) |&gt;
+             select(
+                 investment = diff(log.(:invest)),
+                 income = diff(log.(:income)),
+                 consumption = diff(log.(:cons)),
+             )
 75×3 DataFrame
 │ Row │ investment  │ income     │ consumption │
 │     │ Float64     │ Float64    │ Float64     │
@@ -53,7 +56,7 @@ julia&gt; datadf = DataFrame!(CSV.File(exdir*&quot;/lutkepohl_data.csv&quot;))
 │ 75  │ 0.0363676   │ 0.00517283 │ 0.00598967  │</code></pre><h2 id="Get-lag-selection-criteria-1"><a class="docs-heading-anchor" href="#Get-lag-selection-criteria-1">Get lag selection criteria</a><a class="docs-heading-anchor-permalink" href="#Get-lag-selection-criteria-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; ls = lagselect(Y, 8)
 VarLagSelection
 Maximum lags: 8
-HQC: 1  AIC: 2  SIC: 1</code></pre><h2 id="Estimate-the-VAR-1"><a class="docs-heading-anchor" href="#Estimate-the-VAR-1">Estimate the VAR</a><a class="docs-heading-anchor-permalink" href="#Estimate-the-VAR-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; v  = VAR(Y, ls.selection[&quot;AIC&quot;])
+HQC: 1  AIC: 2  SIC: 1</code></pre><h2 id="Estimate-the-VAR-1"><a class="docs-heading-anchor" href="#Estimate-the-VAR-1">Estimate the VAR</a><a class="docs-heading-anchor-permalink" href="#Estimate-the-VAR-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; v = VAR(Y, ls.selection[&quot;AIC&quot;])
 VarEstimate
 
 Endogenous variables: investment, income, consumption
@@ -118,4 +121,4 @@ Multivariate test for residual autocorrelation.
 - Lags: 12
 - Q stat: 110.054
 - p-value: 0.427
-Fail to reject the null at the 5% level</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../../api/">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 29 June 2020 20:17">Monday 29 June 2020</span>. Using Julia version 1.4.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+Fail to reject the null at the 5% level</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../../api/">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Wednesday 29 July 2020 20:08">Wednesday 29 July 2020</span>. Using Julia version 1.4.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
