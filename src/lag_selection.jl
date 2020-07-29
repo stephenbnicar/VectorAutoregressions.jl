@@ -53,5 +53,5 @@ function show(io::IO, ls::VarLagSelection)
     for k in keys(ls.selection)
         print(io, k, ": ", rpad(ls.selection[k], 3))
     end
-    print(io,'\n')
+    print(io, '\n')
 end

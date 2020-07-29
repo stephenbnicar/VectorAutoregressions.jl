@@ -46,8 +46,13 @@ Estimate an unrestricted vector autoregression (VAR) using OLS.
 - `trend::Bool = false` : include a linear trend
 - `exog` : `DataFrame` or `TimeArray` of observations on exogenous variables
 """
-function VAR(endog::DataFrame, lags; constant::Bool = true, trend::Bool = false,
-    exog::Union{DataFrame,Nothing} = nothing)
+function VAR(
+    endog::DataFrame,
+    lags;
+    constant::Bool = true,
+    trend::Bool = false,
+    exog::Union{DataFrame,Nothing} = nothing,
+)
     if lags > size(endog, 1)
         error("Number of lags is greater than number of observations.")
     end
@@ -60,11 +65,31 @@ function VAR(endog::DataFrame, lags; constant::Bool = true, trend::Bool = false,
     xmat = !isa(exog, Nothing) ? Matrix(exog) : nothing
     obs = size(datamat, 1) - lags
     Z, B, U, seB, ΣU, Yhat = varols(datamat, lags, constant, trend, xmat)
-    VarEstimate(endog, exog, ynames, xnames, lags, constant, trend,
-        obs, Z, B, seB, U, ΣU, Yhat)
+    VarEstimate(
+        endog,
+        exog,
+        ynames,
+        xnames,
+        lags,
+        constant,
+        trend,
+        obs,
+        Z,
+        B,
+        seB,
+        U,
+        ΣU,
+        Yhat,
+    )
 end
 
-function VAR(endog::TimeArray, lags; constant::Bool = true, trend::Bool = false, exog = nothing)
+function VAR(
+    endog::TimeArray,
+    lags;
+    constant::Bool = true,
+    trend::Bool = false,
+    exog = nothing,
+)
     endog = DataFrame(endog)[:, 2:end]
     if !isa(exog, Nothing)
         exog = DataFrame(exog)[:, 2:end]

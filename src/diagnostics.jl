@@ -140,7 +140,7 @@ function bg_test(v::VarEstimate, h::Int)
     nparam = size(v.B, 1)
     Z = v.Z
 
-    U2 = vcat(zeros(p+(h-p), K), U)
+    U2 = vcat(zeros(p + (h - p), K), U)
     Ulag = VectorAutoregressions.lag_matrix(U2, h)
     ZUlag = [Z Ulag]
     AD = (ZUlag' * ZUlag) \ (ZUlag' * U)

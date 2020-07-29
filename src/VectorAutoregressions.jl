@@ -6,8 +6,7 @@ using Dates, LinearAlgebra
 using StatsBase: CoefTable, autocov, autocor, crosscov, crosscor
 
 import Base: show
-import StatsBase: loglikelihood, aic, sample, coef, stderror, residuals,
-    coeftable, fitted
+import StatsBase: loglikelihood, aic, sample, coef, stderror, residuals, coeftable, fitted
 
 export VarEstimate,
     VAR,
