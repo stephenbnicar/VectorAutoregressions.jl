@@ -1,11 +1,10 @@
-## Make sure to activate the VectorAutoregressions environment before running # hide
-# This file uses the example introduced in Section 3.2.3 of Lutkepohl (2006)
+# This file reproduces the example introduced in Section 3.2.3 of Lütkepohl (2006)
 
 using VectorAutoregressions
 using CSV, DataFrames, DataFramesMeta
 using Dates
 
-exdir = dirname(dirname(pathof(VectorAutoregressions))) * "/examples";
+exdir = pkgdir(VectorAutoregressions) * "/examples";
 datadf = DataFrame!(CSV.File(exdir * "/lutkepohl_data.csv"))
 
 # Take the subset from 1960q1 to 1978q4, and use log-difference for each series

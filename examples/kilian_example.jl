@@ -2,7 +2,7 @@
 using CSV, DataFrames
 using VectorAutoregressions
 
-exdir = dirname(dirname(pathof(VectorAutoregressions))) * "/examples";
+exdir = pkgdir(VectorAutoregressions) * "/examples";
 datadf = DataFrame!(CSV.File(exdir * "/kilian_data.csv"));
 first(datadf, 6)
 
