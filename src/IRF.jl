@@ -68,10 +68,28 @@ function simple_irf1(B, K, p, h)
     #   phi(:,:,i) is all simple responses to all shocks at horizon i
     phi = zeros(K, K, h + 1)
     # For the calculation, see Lutkepohl, p.52
-    bigA = comp_matrix(A, p)
+    bigA = companion(A, p)
     bigJ = [Matrix{Float64}(I, K, K) zeros(K, K * p - K)]
     for i = 0:h
         phi[:, :, i+1] = bigJ * bigA^i * bigJ'
+    end
+    return phi
+end
+
+function simple_irf2(B, K, p, h)
+    if h <= max(3, p)
+        h = max(3, p) + 1
+    end
+    nparam = size(B, 1)
+    A = B[(nparam-K*p)+1:end, :]
+    A = reshape(A', (K, K, p))
+
+    phi = zeros(K, K, h + 1)
+    phi[:,:,1] = Matrix(1.0I, K, K)
+    for i = 2:h+1
+        for j = 1:min(i-1,p)
+            phi[:, :, i] += phi[:, :, i-j] * A[:, :, j]
+        end
     end
     return phi
 end

@@ -33,5 +33,7 @@ include("VAR.jl")
 include("statsbase.jl")
 include("diagnostics.jl")
 include("lag_selection.jl")
+include("IRF.jl")
+
 
 end # module
