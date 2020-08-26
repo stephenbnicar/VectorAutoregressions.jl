@@ -20,12 +20,12 @@ end
 """
 function IRF(
     v::VarEstimate,
-    h;
+    h::Int;
     boot::Bool = false,
     reps::Int = 500,
     ci::Float64 = 0.95,
     orthogonal = true,
-    cumulative = false
+    cumulative = false,
 )
     Y = v.Y
     p = v.lags
@@ -36,7 +36,7 @@ function IRF(
     Σ = v.ΣU
 
     K = size(B, 2)
-    ϕ = simple_irf1(B, K, p, h + 1)
+    ϕ = simple_irf(B, K, p, h)
     if orthogonal
         Θ = orthogonal_irf(ϕ, Σ, K, h)
         point = permutedims(Θ, [1, 3, 2])
@@ -67,9 +67,9 @@ function simple_irf(B, K, p, h)
     A = reshape(A', (K, K, p))
 
     phi = zeros(K, K, h + 1)
-    phi[:,:,1] = Matrix(1.0I, K, K)
+    phi[:, :, 1] = Matrix(1.0I, K, K)
     @views for i = 2:h+1
-        for j = 1:min(i-1,p)
+        for j = 1:min(i - 1, p)
             @inbounds phi[:, :, i] += phi[:, :, i-j] * A[:, :, j]
         end
     end
