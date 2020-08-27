@@ -12,3 +12,6 @@ h = 12
 
 phi = VectorAutoregressions.simple_irf(B, K, p, h)
 theta = VectorAutoregressions.orthogonal_irf(phi, sigma, K, h)
+
+irf = VectorAutoregressions.IRF(v, h, orthogonal = false)
+cirf = VectorAutoregressions.IRF(v, h, orthogonal = false, cumulative = true)

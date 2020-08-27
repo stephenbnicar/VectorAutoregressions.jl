@@ -57,8 +57,8 @@ function IRF(
 
     # Cumulative impulse responses
     if cumulative
-        upper = cumsum(upper, dims = 2)
-        lower = cumsum(lower, dims = 2)
+        # upper = cumsum(upper, dims = 2)
+        # lower = cumsum(lower, dims = 2)
         point = cumsum(point, dims = 2)
     end
 
