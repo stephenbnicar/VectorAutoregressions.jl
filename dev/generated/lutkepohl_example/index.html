@@ -53,11 +53,11 @@ julia&gt; datadf = DataFrame!(CSV.File(exdir * &quot;/lutkepohl_data.csv&quot;))
 │ 72  │ 0.0255197   │ 0.0108429  │ 0.0124789   │
 │ 73  │ 0.0355799   │ 0.0145988  │ 0.0184311   │
 │ 74  │ 0.0255078   │ 0.0243391  │ 0.0131943   │
-│ 75  │ 0.0363676   │ 0.00517283 │ 0.00598967  │</code></pre><h2 id="Get-lag-selection-criteria-1"><a class="docs-heading-anchor" href="#Get-lag-selection-criteria-1">Get lag selection criteria</a><a class="docs-heading-anchor-permalink" href="#Get-lag-selection-criteria-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; ls = lagselect(Y, 8)
-VarLagSelection
+│ 75  │ 0.0363676   │ 0.00517283 │ 0.00598967  │</code></pre><h2 id="Get-lag-selection-criteria-1"><a class="docs-heading-anchor" href="#Get-lag-selection-criteria-1">Get lag selection criteria</a><a class="docs-heading-anchor-permalink" href="#Get-lag-selection-criteria-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; ls = LagSelection(Y, 8)
+LagSelection
 Maximum lags: 8
 HQC: 1  AIC: 2  SIC: 1</code></pre><h2 id="Estimate-the-VAR-1"><a class="docs-heading-anchor" href="#Estimate-the-VAR-1">Estimate the VAR</a><a class="docs-heading-anchor-permalink" href="#Estimate-the-VAR-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; v = VAR(Y, ls.selection[&quot;AIC&quot;])
-VarEstimate
+VAREstimate
 
 Endogenous variables: investment, income, consumption
 Deterministic variables: intercept
@@ -101,8 +101,8 @@ consumption.l1   -0.264       0.136     -1.94    0.0565
 investment.l2     0.0339      0.0256     1.32    0.1900
 income.l2         0.3549      0.1094     3.24    0.0019
 consumption.l2   -0.0222      0.1361    -0.16    0.8709
-───────────────────────────────────────────────────────</code></pre><h2 id="Check-stability-of-the-VAR-1"><a class="docs-heading-anchor" href="#Check-stability-of-the-VAR-1">Check stability of the VAR</a><a class="docs-heading-anchor-permalink" href="#Check-stability-of-the-VAR-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; sc = checkstable(v)
-VarStabilityCheck
+───────────────────────────────────────────────────────</code></pre><h2 id="Check-stability-of-the-VAR-1"><a class="docs-heading-anchor" href="#Check-stability-of-the-VAR-1">Check stability of the VAR</a><a class="docs-heading-anchor-permalink" href="#Check-stability-of-the-VAR-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; sc = StabilityCheck(v)
+StabilityCheck
 VAR is stable
 Modulus of eigenvalues (dropping repeated values):
 [0.371, 0.492, 0.551, 0.57]</code></pre><h2 id="Check-for-autocorrelation-in-the-residuals-1"><a class="docs-heading-anchor" href="#Check-for-autocorrelation-in-the-residuals-1">Check for autocorrelation in the residuals</a><a class="docs-heading-anchor-permalink" href="#Check-for-autocorrelation-in-the-residuals-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; pt = portmanteau_test(v, 12)
@@ -121,4 +121,4 @@ Multivariate test for residual autocorrelation.
 - Lags: 12
 - Q stat: 110.054
 - p-value: 0.427
-Fail to reject the null at the 5% level</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../../api/">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Thursday 27 August 2020 20:10">Thursday 27 August 2020</span>. Using Julia version 1.4.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+Fail to reject the null at the 5% level</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../../api/">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Wednesday 9 September 2020 20:13">Wednesday 9 September 2020</span>. Using Julia version 1.4.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
