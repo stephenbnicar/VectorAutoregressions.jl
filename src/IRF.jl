@@ -1,7 +1,7 @@
 """
     IrfEstimate
 
-`struct` to hold impulse response functions for a [`VarEstimate`](@ref)
+`struct` to hold impulse response functions for a [`VAREstimate`](@ref)
 
 # Fields
 - point: Point estimates of impulse responses
@@ -19,7 +19,7 @@ end
 
 """
 function IRF(
-    v::VarEstimate,
+    v::VAREstimate,
     h::Int;
     # boot::Bool = false,
     # reps::Int = 500,

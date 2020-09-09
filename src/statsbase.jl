@@ -3,39 +3,39 @@ Functions from StatsBase extended to VAR structs
 ==#
 
 """
-    coef(v::VarEstimate)
+    coef(v::VAREstimate)
 
 Return the matrix of coefficients for VAR model `v`.
 """
-coef(v::VarEstimate) = v.B
+coef(v::VAREstimate) = v.B
 
 """
-    stderror(v::VarEstimate)
+    stderror(v::VAREstimate)
 
 Return the standard errors for the coefficients of VAR model `v`.
 """
-stderror(v::VarEstimate) = v.seB
+stderror(v::VAREstimate) = v.seB
 
 """
-    residuals(v::VarEstimate)
+    residuals(v::VAREstimate)
 
 Return the matrix of residuals for VAR model `v`.
 """
-residuals(v::VarEstimate) = v.U
+residuals(v::VAREstimate) = v.U
 
 """
-    fitted(v::VarEstimate)
+    fitted(v::VAREstimate)
 
 Return the fitted values for VAR model `v`.
 """
-fitted(v::VarEstimate) = v.Yhat
+fitted(v::VAREstimate) = v.Yhat
 
 """
-    loglikelihood(v::VarEstimate)
+    loglikelihood(v::VAREstimate)
 
 Return the log-likelihood for VAR model `v`.
 """
-function loglikelihood(v::VarEstimate)
+function loglikelihood(v::VAREstimate)
     U = residuals(v)
     ΣU = v.ΣU
     obs, K = size(U)
@@ -47,11 +47,11 @@ function loglikelihood(v::VarEstimate)
 end
 
 """
-    aic(v::VarEstimate)
+    aic(v::VAREstimate)
 
 Return Akaike's Information Criterion for VAR model `v`.
 """
-function aic(v::VarEstimate)
+function aic(v::VAREstimate)
     obs, K = size(residuals(v))
     nparam = size(coef(v), 1)
     ΣU = v.ΣU
@@ -59,7 +59,7 @@ function aic(v::VarEstimate)
     return logdet(ΣUml) + (2 / obs) * nparam * K
 end
 
-function coeftable(v::VarEstimate)
+function coeftable(v::VAREstimate)
     B = coef(v)
     seB = stderror(v)
     m, K = size(B)

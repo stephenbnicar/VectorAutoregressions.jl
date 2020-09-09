@@ -7,10 +7,10 @@ datadf = DataFrame!(CSV.File(exdir * "/kilian_data.csv"));
 first(datadf, 6)
 
 # ## Get Lag Selection Criteria
-ls = lagselect(datadf, 8)
+ls = LagSelection(datadf, 8)
 
 # ## Estimate the VAR
 v = VAR(datadf, ls.selection["AIC"])
 
 # ## Check Stability of the VAR
-vstable = checkstable(v)
+vstable = StabilityCheck(v)

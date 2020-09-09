@@ -8,12 +8,10 @@ using StatsBase: CoefTable, autocov, autocor, crosscov, crosscor
 import Base: show
 import StatsBase: loglikelihood, aic, sample, coef, stderror, residuals, coeftable, fitted
 
-export VarEstimate,
+export VAREstimate,
     VAR,
-    VarLagSelection,
-    lagselect,
-    VarStabilityCheck,
-    checkstable,
+    LagSelection,
+    StabilityCheck,
     PortmanteauTest,
     portmanteau_test,
     BreuschGodfreyTest,

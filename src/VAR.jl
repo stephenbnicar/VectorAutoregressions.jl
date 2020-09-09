@@ -1,5 +1,5 @@
 """
-    VarEstimate
+    VAREstimate
 
 # Fields
 - `Y::Union{DataFrame,TimeArray}`
@@ -17,7 +17,7 @@
 - `ΣU::Matrix`
 - `Yhat::Matrix`
 """
-struct VarEstimate
+struct VAREstimate
     Y::Union{DataFrame,TimeArray}
     X::Union{DataFrame,TimeArray,Nothing}
     ynames::Array{String}
@@ -35,7 +35,7 @@ struct VarEstimate
 end
 
 """
-    VAR(endog, lags; constant = true, trend = false, exog = nothing) -> VarEstimate
+    VAR(endog, lags; constant = true, trend = false, exog = nothing) -> VAREstimate
 
 Estimate an unrestricted vector autoregression (VAR) using OLS.
 
@@ -65,7 +65,7 @@ function VAR(
     xmat = !isa(exog, Nothing) ? Matrix(exog) : nothing
     obs = size(datamat, 1) - lags
     Z, B, U, seB, ΣU, Yhat = varols(datamat, lags, constant, trend, xmat)
-    VarEstimate(
+    VAREstimate(
         endog,
         exog,
         ynames,
@@ -102,8 +102,8 @@ function varols(y, ylag, constant, trend, x)
     Z = rhs_matrix(y, ylag, constant, trend, x)
     # Set up LHS Matrix
     Y = y[ylag+1:end, :]
-    # Coefficient estimates
-    B = (Z' * Z) \ (Z' * Y) # each column corresponds to an equation
+    # Coefficient estimates: each column of B corresponds to an equation
+    B = (Z' * Z) \ (Z' * Y)
     Yhat = Z * B
     U = Y - Yhat
     ΣU = (U' * U) / (size(Y, 1) - size(B, 1))
@@ -112,7 +112,7 @@ function varols(y, ylag, constant, trend, x)
     return Z, B, U, seB, ΣU, Yhat
 end
 
-function show(io::IO, v::VarEstimate)
+function show(io::IO, v::VAREstimate)
     ct = coeftable(v)
     K = length(ct)
     println(io, typeof(v))

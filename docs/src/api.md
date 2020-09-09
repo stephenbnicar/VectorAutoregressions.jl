@@ -2,16 +2,14 @@
 
 ```@docs
 VAR
-VarEstimate
+VAREstimate
 ```
 
 ## Diagnostics
 
 ```@docs
-lagselect
-VarLagSelection
-checkstable
-VarStabilityCheck
+LagSelection
+StabilityCheck
 portmanteau_test
 PortmanteauTest
 loglikelihood

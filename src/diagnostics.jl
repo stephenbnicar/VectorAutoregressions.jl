@@ -1,9 +1,9 @@
 """
-    sic(v::VarEstimate)
+    sic(v::VAREstimate)
 
 Return the Schwarz (Bayesian) Information Criterion for VAR model `v`.
 """
-function sic(v::VarEstimate)
+function sic(v::VAREstimate)
     obs, K = size(residuals(v))
     nparam = size(coef(v), 1)
     ΣU = v.ΣU
@@ -12,11 +12,11 @@ function sic(v::VarEstimate)
 end
 
 """
-    hqc(v::VarEstimate)
+    hqc(v::VAREstimate)
 
 Return the Hannan-Quinn Criterion for VAR model `v`.
 """
-function hqc(v::VarEstimate)
+function hqc(v::VAREstimate)
     obs, K = size(residuals(v))
     nparam = size(coef(v), 1)
     ΣU = v.ΣU
@@ -25,27 +25,27 @@ function hqc(v::VarEstimate)
 end
 
 """
-    VarStabilityCheck
+    StabilityCheck(v::VAREstimate)
 
-`struct` to hold the results of [`checkstable`](@ref).
+Check the stability of the estimated VAR model `v`.
 
 # Fields
 - `isstable::Bool`
 - `eigenvals::Array{Number}`
 - `eigenmod::Array{Float64}`
 """
-struct VarStabilityCheck
+struct StabilityCheck
     isstable::Bool
     eigenvals::Array{Number}
     eigenmod::Array{Float64}
 end
 
 """
-    checkstable(v::VarEstimate) -> VarStabilityCheck
+    checkstable(v::VAREstimate) -> VarStabilityCheck
 
 Check the stability of the estimated VAR model `v`.
 """
-function checkstable(v::VarEstimate)
+function StabilityCheck(v::VAREstimate)
     # See Lutkepohl (2006) p.15ff
     p = v.lags
     B = coef(v)
@@ -56,10 +56,10 @@ function checkstable(v::VarEstimate)
     eigenvals = eigvals(Acomp)
     eigenmod = abs.(eigenvals)
     isstable = all(eigenmod .< 1)
-    VarStabilityCheck(isstable, eigenvals, eigenmod)
+    StabilityCheck(isstable, eigenvals, eigenmod)
 end
 
-function show(io::IO, obj::VarStabilityCheck)
+function show(io::IO, obj::StabilityCheck)
     # K = length(stab.ynames)
     E = obj.eigenvals
     Emod = round.(unique(obj.eigenmod), digits = 3)
@@ -94,13 +94,13 @@ struct PortmanteauTest
 end
 
 """
-    portmanteau_test(v::VarEstimate, h::Int) -> PortmanteauTest
+    portmanteau_test(v::VAREstimate, h::Int) -> PortmanteauTest
 
 Conduct a multivariate portmanteau test for residual autocorrelation up to lag
     `h` for VAR model `v`.
 Implements the adjusted test described on p.171 of Lutkepohl (2006).
 """
-function portmanteau_test(v::VarEstimate, h::Int)
+function portmanteau_test(v::VAREstimate, h::Int)
     U = residuals(v)
     T, K = size(U)
     p = v.lags
@@ -133,7 +133,7 @@ struct BreuschGodfreyTest
     pval::Float64
 end
 
-function bg_test(v::VarEstimate, h::Int)
+function bg_test(v::VAREstimate, h::Int)
     U = residuals(v)
     T, K = size(U)
     p = v.lags
