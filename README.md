@@ -13,9 +13,9 @@ Currently implemented:
 - [x] Estimate an unrestricted VAR using OLS.
 - [x] Check the stability of an estimated VAR.
 - [x] Portmanteau test for autocorellation in the residuals.
+- [x] LM (Breusch-Godfrey) test for autocorellation in the residuals.
 
 To do:
-- [ ] Test for autocorellation in the residuals.
 - [ ] Test for normally-distributed residuals.
 - [ ] Calculate simple and orthogonalized impulse responses.
 - [ ] Add support for linear restrictions.

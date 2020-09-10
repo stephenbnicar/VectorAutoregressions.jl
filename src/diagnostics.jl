@@ -73,7 +73,7 @@ end
 
 Conduct a multivariate portmanteau test for residual autocorrelation up to lag
     `h` for VAR model `v`.
-Implements the adjusted test described on p.171 of Lutkepohl (2006).
+Implements the adjusted test described on p.171 of Lütkepohl (2006).
 
 # Fields
 - `U::Matrix`
@@ -115,15 +115,32 @@ function show(io::IO, obj::PortmanteauTest)
     println(io, "$outcome the null at the 5% level")
 end
 
-struct BreuschGodfreyTest
-    U::Matrix
+"""
+    LMCorrTest(v::VAREstimate, h::Int; smallsample = false) -> LMCorrTest
+
+Conduct a multivariate LM test (Breusch-Godfrey test) for residual autocorrelation
+    up to lag `h` for VAR model `v`.
+If `smallsample = true`, the alternative test statistic detailed in Lütkepohl (2006),
+    p.173 is used.
+
+# Fields
+- `h::Int`
+- `Q::Float64`
+- `df1::Any`
+- `df2::Any`
+- `pval::Float64`
+- `smallsample::Bool`
+"""
+struct LMCorrTest
     h::Int
     Q::Float64
-    df::Int
+    df1::Any
+    df2::Any
     pval::Float64
+    smallsample::Bool
 end
 
-function bg_test(v::VAREstimate, h::Int)
+function LMCorrTest(v::VAREstimate, h::Int; smallsample = false)
     U = residuals(v)
     T, K = size(U)
     p = v.lags
@@ -139,19 +156,34 @@ function bg_test(v::VAREstimate, h::Int)
     ΣUml = ((T - nparam) / T) * v.ΣU
     ΣEml = (E' * E) / T
 
-    Q = T * (K - tr(ΣUml \ ΣEml))
-    df = h * K^2
-    pval = ccdf(Chisq(df), Q)
-    return BreuschGodfreyTest(U, h, Q, df, pval)
+    if smallsample
+        # Test stat from Lütkepohl 2006, p.173
+        s = sqrt((K^4 * h^2 - 4) / (K^2 + (K^2 * h^2) - 5))
+        N = T - (K*p) - 1 - (K*h) - (K - K*h +1)/2
+        df1 = h * K^2
+        df2 = (N * s) - ((K^2 * h) / 2) + 1
+        Q = ((det(ΣUml) / det(ΣEml))^(1 / s) - 1) * (df2 / df1)
+        pval = ccdf(FDist(df1, df2), Q)
+    else
+        # Test stat from Killian and Lütkepohl 2017, p.54
+        Q = T * (K - tr(ΣUml \ ΣEml))
+        df1 = h * K^2
+        df2 = nothing
+        pval = ccdf(Chisq(df1), Q)
+    end
+    return LMCorrTest(h, Q, df1, df2, pval, smallsample)
 end
 
-function show(io::IO, obj::BreuschGodfreyTest)
+function show(io::IO, obj::LMCorrTest)
     println(io, typeof(obj))
-    println(io, "Multivariate test for residual autocorrelation.")
+    println(io, "Multivariate LM test for residual autocorrelation.")
     println(io, "- Null is no autocorrelation")
     println(io, "- Lags: $(obj.h)")
     println(io, "- Q stat: $(round(obj.Q; digits=3))")
     println(io, "- p-value: $(round(obj.pval; digits=3))")
+    if obj.smallsample
+        println(io, "- Small sample test")
+    end
     outcome = obj.pval > 0.05 ? "Fail to reject" : "Reject"
     println(io, "$outcome the null at the 5% level")
 end

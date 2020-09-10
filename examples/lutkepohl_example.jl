@@ -18,7 +18,7 @@ Y = @linq datadf |>
       );
 first(Y, 6)
 
-# ## Get lag selection criteria
+# ## Calculate lag selection criteria
 ls = LagSelection(Y, 8)
 # ## Estimate the VAR
 v = VAR(Y, ls.selection["AIC"])
@@ -26,3 +26,5 @@ v = VAR(Y, ls.selection["AIC"])
 sc = StabilityCheck(v)
 # ## Check for autocorrelation in the residuals
 pt = PortmanteauTest(v, 12)
+bg1 = LMCorrTest(v, 4)
+bg2 = LMCorrTest(v, 4, smallsample = true)

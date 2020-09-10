@@ -1,7 +1,7 @@
 module VectorAutoregressions
 
 using DataFrames, TimeSeries
-using Distributions: ccdf, TDist, Chisq
+using Distributions: ccdf, TDist, Chisq, FDist
 using Dates, LinearAlgebra
 using StatsBase: CoefTable, autocov, autocor, crosscov, crosscor
 
@@ -13,8 +13,7 @@ export VAREstimate,
     LagSelection,
     StabilityCheck,
     PortmanteauTest,
-    BreuschGodfreyTest,
-    bg_test,
+    LMCorrTest,
     loglikelihood,
     aic,
     sic,

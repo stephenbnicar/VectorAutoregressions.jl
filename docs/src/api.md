@@ -11,6 +11,7 @@ VAREstimate
 LagSelection
 StabilityCheck
 PortmanteauTest
+LMCorrTest
 loglikelihood
 aic
 sic

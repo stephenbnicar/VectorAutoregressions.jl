@@ -7,3 +7,4 @@ Currently implemented:
 - Estimate an unrestricted VAR using OLS.
 - Check the stability of an estimated VAR.
 - Portmanteau test for autocorellation in the residuals.
+- LM (Breusch-Godfrey) test for autocorellation in the residuals.
