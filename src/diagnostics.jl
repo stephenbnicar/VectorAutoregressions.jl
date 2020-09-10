@@ -25,7 +25,7 @@ function hqc(v::VAREstimate)
 end
 
 """
-    StabilityCheck(v::VAREstimate)
+    StabilityCheck(v::VAREstimate) -> StabilityCheck
 
 Check the stability of the estimated VAR model `v`.
 
@@ -40,11 +40,6 @@ struct StabilityCheck
     eigenmod::Array{Float64}
 end
 
-"""
-    checkstable(v::VAREstimate) -> VarStabilityCheck
-
-Check the stability of the estimated VAR model `v`.
-"""
 function StabilityCheck(v::VAREstimate)
     # See Lutkepohl (2006) p.15ff
     p = v.lags
@@ -74,9 +69,11 @@ function show(io::IO, obj::StabilityCheck)
 end
 
 """
-    PortmanteauTest
+    PortmanteauTest(v::VAREstimate, h::Int) -> PortmanteauTest
 
-`struct` to hold the results of [`portmanteau_test`](@ref).
+Conduct a multivariate portmanteau test for residual autocorrelation up to lag
+    `h` for VAR model `v`.
+Implements the adjusted test described on p.171 of Lutkepohl (2006).
 
 # Fields
 - `U::Matrix`
@@ -93,14 +90,7 @@ struct PortmanteauTest
     pval::Float64
 end
 
-"""
-    portmanteau_test(v::VAREstimate, h::Int) -> PortmanteauTest
-
-Conduct a multivariate portmanteau test for residual autocorrelation up to lag
-    `h` for VAR model `v`.
-Implements the adjusted test described on p.171 of Lutkepohl (2006).
-"""
-function portmanteau_test(v::VAREstimate, h::Int)
+function PortmanteauTest(v::VAREstimate, h::Int)
     U = residuals(v)
     T, K = size(U)
     p = v.lags
@@ -111,7 +101,7 @@ function portmanteau_test(v::VAREstimate, h::Int)
     end
     df = K^2 * (h - p)
     pval = ccdf(Chisq(df), Q)
-    return PortmanteauTest(U, h, Q, df, pval)
+    PortmanteauTest(U, h, Q, df, pval)
 end
 
 function show(io::IO, obj::PortmanteauTest)

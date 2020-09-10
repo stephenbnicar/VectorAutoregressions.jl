@@ -23,5 +23,5 @@ v = VAR(Y, ls.selection["AIC"])
 # ## Check stability of the VAR
 sc = StabilityCheck(v)
 # ## Check for autocorrelation in the residuals
-pt = portmanteau_test(v, 12)
+pt = PortmanteauTest(v, 12)
 bgt = bg_test(v, 12)

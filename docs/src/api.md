@@ -10,7 +10,6 @@ VAREstimate
 ```@docs
 LagSelection
 StabilityCheck
-portmanteau_test
 PortmanteauTest
 loglikelihood
 aic
