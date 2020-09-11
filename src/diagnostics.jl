@@ -187,3 +187,39 @@ function show(io::IO, obj::LMCorrTest)
     outcome = obj.pval > 0.05 ? "Fail to reject" : "Reject"
     println(io, "$outcome the null at the 5% level")
 end
+
+struct ResidualNormalityTest
+    λ_s::Float64
+    λ_k::Float64
+    λ_sk::Float64
+    pval1::Float64
+    pval2::Float64
+    pval3::Float64
+end
+
+function ResidualNormalityTest(v::VAREstimate)
+    U = residuals(v)
+    ΣU = v.ΣU
+    λs, λk, λsk, pval1, pval2, pval3 = multivariate_normality_test(U, ΣU)
+    ResidualNormalityTest(λs, λk, λsk, pval1, pval2, pval3)
+end
+
+function multivariate_normality_test(U, Σ)
+    # see Lutkepohl pp. 177-181
+    uobs, K = size(U)
+    P   = cholesky(Σ).L
+    W   = transpose(P\U')
+    W3  = W.^3
+    W4  = W.^4
+    b1  = dropdims(sum(W3, dims=1)/uobs, dims=1)
+    b2  = dropdims(sum(W4, dims=1)/uobs, dims=1)
+    λs = dot(b1, b1)*(uobs/6)
+    λk = dot(b2 .- 3, b2 .- 3)*(uobs/24)
+    λsk = λs + λk
+
+    pval1 = 1 - cdf(Chisq(K), λs)
+    pval2 = 1 - cdf(Chisq(K), λk)
+    pval3 = 1 - cdf(Chisq(2K), λsk)
+
+    return λs, λk, λsk, pval1, pval2, pval3
+end
