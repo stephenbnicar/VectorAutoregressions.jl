@@ -19,7 +19,7 @@ TimeSeries = "9e3dc215-6440-5c97-bce1-76c03772f85e"
 [compat]
 CSV = "^0.7, 0.8"
 DataFrames = "^0.21, 0.22"
-DataFramesMeta = "^0.5"
+DataFramesMeta = "^0.5, 0.6"
 Distributions = "^0.23, 0.24"
 PDMats = "^0.10"
 Plots = "1.6"
