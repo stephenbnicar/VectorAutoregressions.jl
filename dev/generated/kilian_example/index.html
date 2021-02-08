@@ -6,21 +6,10 @@ julia&gt; using VectorAutoregressions
 julia&gt; exdir = dirname(dirname(pathof(VectorAutoregressions)))*&quot;/examples&quot;;
 
 julia&gt; datadf = CSV.read(exdir*&quot;/kilian_data.csv&quot;);
-┌ Warning: `CSV.read(input; kw...)` is deprecated in favor of `using DataFrames; CSV.read(input, DataFrame; kw...)
-│   caller = read(::String) at CSV.jl:40
-└ @ CSV ~/.julia/packages/CSV/MKemC/src/CSV.jl:40
+ERROR: ArgumentError: provide a valid sink argument, like `using DataFrames; CSV.read(source, DataFrame)`
 
 julia&gt; first(datadf, 6)
-6×3 DataFrame
-│ Row │ drgdp     │ irate    │ infl     │
-│     │ Float64   │ Float64  │ Float64  │
-├─────┼───────────┼──────────┼──────────┤
-│ 1   │ 1.99449   │ 0.986667 │ 0.281037 │
-│ 2   │ 2.81001   │ 1.34333  │ 0.481803 │
-│ 3   │ 1.59281   │ 1.5      │ 0.414831 │
-│ 4   │ 1.33458   │ 1.94     │ 0.708994 │
-│ 5   │ 0.608906  │ 2.35667  │ 0.977862 │
-│ 6   │ -0.311153 │ 2.48333  │ 0.999882 │</code></pre><h2 id="Get-Lag-Selection-Criteria-1"><a class="docs-heading-anchor" href="#Get-Lag-Selection-Criteria-1">Get Lag Selection Criteria</a><a class="docs-heading-anchor-permalink" href="#Get-Lag-Selection-Criteria-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; ls = lagselect(datadf, 8)
+ERROR: UndefVarError: datadf not defined</code></pre><h2 id="Get-Lag-Selection-Criteria-1"><a class="docs-heading-anchor" href="#Get-Lag-Selection-Criteria-1">Get Lag Selection Criteria</a><a class="docs-heading-anchor-permalink" href="#Get-Lag-Selection-Criteria-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; ls = lagselect(datadf, 8)
 ERROR: UndefVarError: lagselect not defined</code></pre><h2 id="Estimate-the-VAR-1"><a class="docs-heading-anchor" href="#Estimate-the-VAR-1">Estimate the VAR</a><a class="docs-heading-anchor-permalink" href="#Estimate-the-VAR-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; v  = VAR(datadf, ls.selection[&quot;HQC&quot;])
 ERROR: UndefVarError: ls not defined</code></pre><h2 id="Check-Stability-of-the-VAR-1"><a class="docs-heading-anchor" href="#Check-Stability-of-the-VAR-1">Check Stability of the VAR</a><a class="docs-heading-anchor-permalink" href="#Check-Stability-of-the-VAR-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; vstable = checkstable(v)
-ERROR: UndefVarError: checkstable not defined</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 11 September 2020 20:45">Friday 11 September 2020</span>. Using Julia version 1.4.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ERROR: UndefVarError: checkstable not defined</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 8 February 2021 22:44">Monday 8 February 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

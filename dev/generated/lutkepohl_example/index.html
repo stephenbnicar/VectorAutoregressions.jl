@@ -11,108 +11,32 @@ julia&gt; datadf = DataFrame!(CSV.File(exdir * &quot;/lutkepohl_data.csv&quot;))
 
 julia&gt; first(datadf, 6)
 6×4 DataFrame
-│ Row │ date       │ invest │ income │ cons  │
-│     │ Dates.Date │ Int64  │ Int64  │ Int64 │
-├─────┼────────────┼────────┼────────┼───────┤
-│ 1   │ 1960-03-01 │ 180    │ 451    │ 415   │
-│ 2   │ 1960-06-01 │ 179    │ 465    │ 421   │
-│ 3   │ 1960-09-01 │ 185    │ 485    │ 434   │
-│ 4   │ 1960-12-01 │ 192    │ 493    │ 448   │
-│ 5   │ 1961-03-01 │ 211    │ 509    │ 459   │
-│ 6   │ 1961-06-01 │ 202    │ 520    │ 458   │</code></pre><p>Take the subset from 1960q1 to 1978q4, and use log-difference for each series</p><pre><code class="language-julia-repl">julia&gt; Y = @linq datadf |&gt;
+ Row │ date        invest  income  cons
+     │ Date…       Int64   Int64   Int64
+─────┼───────────────────────────────────
+   1 │ 1960-03-01     180     451    415
+   2 │ 1960-06-01     179     465    421
+   3 │ 1960-09-01     185     485    434
+   4 │ 1960-12-01     192     493    448
+   5 │ 1961-03-01     211     509    459
+   6 │ 1961-06-01     202     520    458</code></pre><p>Take the subset from 1960q1 to 1978q4, and use log-difference for each series</p><pre><code class="language-julia-repl">julia&gt; Y = @linq datadf |&gt;
              where(:date .&lt; Date(1979, 3, 1)) |&gt;
              select(
                  investment = diff(log.(:invest)),
                  income = diff(log.(:income)),
                  consumption = diff(log.(:cons)),
              );
+ERROR: ArgumentError: length 75 of vector returned from function #2 is different from number of rows 76 of the source data frame.
 
 julia&gt; first(Y, 6)
-6×3 DataFrame
-│ Row │ investment  │ income     │ consumption │
-│     │ Float64     │ Float64    │ Float64     │
-├─────┼─────────────┼────────────┼─────────────┤
-│ 1   │ -0.00557105 │ 0.0305701  │ 0.0143543   │
-│ 2   │ 0.03297     │ 0.0421115  │ 0.0304117   │
-│ 3   │ 0.0371395   │ 0.0163603  │ 0.0317487   │
-│ 4   │ 0.0943628   │ 0.0319388  │ 0.024257    │
-│ 5   │ -0.0435904  │ 0.0213808  │ -0.00218103 │
-│ 6   │ 0.0244511   │ 0.00192123 │ 0.0448314   │</code></pre><h2 id="Calculate-lag-selection-criteria-1"><a class="docs-heading-anchor" href="#Calculate-lag-selection-criteria-1">Calculate lag selection criteria</a><a class="docs-heading-anchor-permalink" href="#Calculate-lag-selection-criteria-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; ls = LagSelection(Y, 8)
-LagSelection
-Maximum lags: 8
-HQC: 1  AIC: 2  SIC: 1</code></pre><h2 id="Estimate-the-VAR-1"><a class="docs-heading-anchor" href="#Estimate-the-VAR-1">Estimate the VAR</a><a class="docs-heading-anchor-permalink" href="#Estimate-the-VAR-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; v = VAR(Y, ls.selection[&quot;AIC&quot;])
-VAREstimate
-
-Endogenous variables: investment, income, consumption
-Deterministic variables: intercept
-Lags: 2
-Sample size: 73
-
-Estimates for equation investment:
-───────────────────────────────────────────────────────
-                Estimate  Std. Error  t value  Pr &gt; |t|
-───────────────────────────────────────────────────────
-intercept        -0.0167      0.0172    -0.97    0.3351
-investment.l1    -0.3196      0.1255    -2.55    0.0132
-income.l1         0.146       0.5457     0.27    0.7899
-consumption.l1    0.9612      0.6643     1.45    0.1526
-investment.l2    -0.1606      0.1249    -1.29    0.2030
-income.l2         0.1146      0.5346     0.21    0.8309
-consumption.l2    0.9344      0.6651     1.40    0.1647
-───────────────────────────────────────────────────────
-
-Estimates for equation income:
-───────────────────────────────────────────────────────
-                Estimate  Std. Error  t value  Pr &gt; |t|
-───────────────────────────────────────────────────────
-intercept         0.0158      0.0044     3.59    0.0006
-investment.l1     0.0439      0.0319     1.38    0.1734
-income.l1        -0.1527      0.1386    -1.10    0.2746
-consumption.l1    0.2885      0.1687     1.71    0.0919
-investment.l2     0.05        0.0317     1.58    0.1195
-income.l2         0.0192      0.1358     0.14    0.8880
-consumption.l2   -0.0102      0.1689    -0.06    0.9520
-───────────────────────────────────────────────────────
-
-Estimates for equation consumption:
-───────────────────────────────────────────────────────
-                Estimate  Std. Error  t value  Pr &gt; |t|
-───────────────────────────────────────────────────────
-intercept         0.0129      0.0035     3.69    0.0005
-investment.l1    -0.0024      0.0257    -0.09    0.9259
-income.l1         0.2248      0.1117     2.01    0.0482
-consumption.l1   -0.264       0.136     -1.94    0.0565
-investment.l2     0.0339      0.0256     1.32    0.1900
-income.l2         0.3549      0.1094     3.24    0.0019
-consumption.l2   -0.0222      0.1361    -0.16    0.8709
-───────────────────────────────────────────────────────</code></pre><h2 id="Check-stability-of-the-VAR-1"><a class="docs-heading-anchor" href="#Check-stability-of-the-VAR-1">Check stability of the VAR</a><a class="docs-heading-anchor-permalink" href="#Check-stability-of-the-VAR-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; sc = StabilityCheck(v)
-StabilityCheck
-VAR is stable
-Modulus of eigenvalues (dropping repeated values):
-[0.371, 0.492, 0.551, 0.57]</code></pre><h2 id="Check-for-autocorrelation-in-the-residuals-1"><a class="docs-heading-anchor" href="#Check-for-autocorrelation-in-the-residuals-1">Check for autocorrelation in the residuals</a><a class="docs-heading-anchor-permalink" href="#Check-for-autocorrelation-in-the-residuals-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; pt = PortmanteauTest(v, 12)
-PortmanteauTest
-Multivariate test for residual autocorrelation.
-- Null is no autocorrelation
-- Lags: 12
-- Q stat: 81.934
-- p-value: 0.716
-Fail to reject the null at the 5% level
+ERROR: UndefVarError: Y not defined</code></pre><h2 id="Calculate-lag-selection-criteria-1"><a class="docs-heading-anchor" href="#Calculate-lag-selection-criteria-1">Calculate lag selection criteria</a><a class="docs-heading-anchor-permalink" href="#Calculate-lag-selection-criteria-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; ls = LagSelection(Y, 8)
+ERROR: UndefVarError: Y not defined</code></pre><h2 id="Estimate-the-VAR-1"><a class="docs-heading-anchor" href="#Estimate-the-VAR-1">Estimate the VAR</a><a class="docs-heading-anchor-permalink" href="#Estimate-the-VAR-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; v = VAR(Y, ls.selection[&quot;AIC&quot;])
+ERROR: UndefVarError: ls not defined</code></pre><h2 id="Check-stability-of-the-VAR-1"><a class="docs-heading-anchor" href="#Check-stability-of-the-VAR-1">Check stability of the VAR</a><a class="docs-heading-anchor-permalink" href="#Check-stability-of-the-VAR-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; sc = StabilityCheck(v)
+ERROR: UndefVarError: v not defined</code></pre><h2 id="Check-for-autocorrelation-in-the-residuals-1"><a class="docs-heading-anchor" href="#Check-for-autocorrelation-in-the-residuals-1">Check for autocorrelation in the residuals</a><a class="docs-heading-anchor-permalink" href="#Check-for-autocorrelation-in-the-residuals-1" title="Permalink"></a></h2><pre><code class="language-julia-repl">julia&gt; pt = PortmanteauTest(v, 12)
+ERROR: UndefVarError: v not defined
 
 julia&gt; bg1 = LMCorrTest(v, 4)
-LMCorrTest
-Multivariate LM test for residual autocorrelation.
-- Null is no autocorrelation
-- Lags: 4
-- Q stat: 46.599
-- p-value: 0.111
-Fail to reject the null at the 5% level
+ERROR: UndefVarError: v not defined
 
 julia&gt; bg2 = LMCorrTest(v, 4, smallsample = true)
-LMCorrTest
-Multivariate LM test for residual autocorrelation.
-- Null is no autocorrelation
-- Lags: 4
-- Q stat: 1.257
-- p-value: 0.172
-- Small sample test
-Fail to reject the null at the 5% level</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../../api/">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 11 September 2020 20:45">Friday 11 September 2020</span>. Using Julia version 1.4.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ERROR: UndefVarError: v not defined</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../../api/">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 8 February 2021 22:44">Monday 8 February 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
